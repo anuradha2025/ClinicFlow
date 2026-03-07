@@ -1,5 +1,5 @@
 //
-//  DoctorListRow.swift
+//  DoctorSummaryCard.swift
 //  ClinicFlow
 //
 //  Created by COBSCCOMP242P-020 on 2026-03-07.
@@ -7,24 +7,22 @@
 
 import SwiftUI
 
-struct DoctorListRow: View {
+struct DoctorSummaryCard: View {
     let doctor: Doctor
-    let onFavorite: () -> Void
 
     var body: some View {
         HStack(spacing: 12) {
             DoctorAvatarView(imageName: doctor.imageName, size: 56)
             VStack(alignment: .leading, spacing: 4) {
-                Text(doctor.name).font(.subheadline.bold())
-                Text(doctor.specialty).font(.caption).foregroundColor(.cfTextSecondary)
+                Text(doctor.name)
+                    .font(.headline)
+                    .foregroundColor(.cfTextPrimary)
+                Text(doctor.specialty)
+                    .font(.subheadline)
+                    .foregroundColor(.cfTextSecondary)
                 StarRatingView(rating: doctor.rating)
-                Text("Rs. \(Int(doctor.chargeAmount))").font(.caption).foregroundColor(.cfPrimary)
             }
             Spacer()
-            Button(action: onFavorite) {
-                Image(systemName: doctor.isFavorite ? "heart.fill" : "heart")
-                    .foregroundColor(doctor.isFavorite ? .cfDanger : .gray)
-            }
         }
         .padding()
         .background(Color.white)
