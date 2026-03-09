@@ -21,6 +21,7 @@ struct FloatingLabelField: View {
             Group {
                 if isSecure {
                     SecureField(label, text: $text)
+                        .textContentType(.oneTimeCode)
                 } else {
                     TextField(label, text: $text)
                         .keyboardType(keyboardType)

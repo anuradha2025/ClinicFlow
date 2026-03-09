@@ -17,9 +17,13 @@ class HomeViewModel: ObservableObject {
 
     func loadData() {
         isLoading = true
-        // Replace with real API call
-        upcomingAppointments = MockDataService.shared.appointments
         topDoctors = MockDataService.shared.doctors
+
+        // Only show today's and future upcoming appointments
+        upcomingAppointments = MockDataService.shared.appointments
+            .filter { $0.status == .upcoming }
+            .sorted { $0.date < $1.date }
+
         isLoading = false
     }
 }

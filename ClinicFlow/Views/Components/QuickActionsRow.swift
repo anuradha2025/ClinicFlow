@@ -8,19 +8,44 @@
 import SwiftUI
 
 struct QuickActionsRow: View {
+    @EnvironmentObject var appState: AppState
+
     var body: some View {
         HStack(spacing: 12) {
-            NavigationLink(destination: FindDoctorView()) {
-                QuickActionItem(title: "Find Doctor", icon: "stethoscope", color: .cfPrimary)
+            // Find Doctor → switches to Doctors tab
+            Button {
+                appState.selectedTab = 1
+            } label: {
+                QuickActionItem(title: "Find Doctor",
+                                icon: "stethoscope",
+                                color: .cfPrimary)
             }
-            NavigationLink(destination: MyAppointmentsView()) {
-                QuickActionItem(title: "Appointments", icon: "calendar", color: .cfSuccess)
+
+            // Appointments → switches to Appointments tab
+            Button {
+                appState.selectedTab = 2
+            } label: {
+                QuickActionItem(title: "Appointments",
+                                icon: "calendar",
+                                color: .cfSuccess)
             }
-            NavigationLink(destination: MyReportsView()) {
-                QuickActionItem(title: "Reports", icon: "doc.text", color: .cfWarning)
+
+            // Reports → switches to Reports tab
+            Button {
+                appState.selectedTab = 3
+            } label: {
+                QuickActionItem(title: "Reports",
+                                icon: "doc.text",
+                                color: .cfWarning)
             }
-            NavigationLink(destination: AccountView()) {
-                QuickActionItem(title: "Settings", icon: "gearshape", color: .cfDanger)
+
+            // Settings → switches to Account tab
+            Button {
+                appState.selectedTab = 4
+            } label: {
+                QuickActionItem(title: "Settings",
+                                icon: "gearshape",
+                                color: .cfDanger)
             }
         }
         .padding(.horizontal)
@@ -37,9 +62,9 @@ struct QuickActionItem: View {
             Image(systemName: icon)
                 .font(.title2)
                 .foregroundColor(color)
-                .frame(width: 50, height: 50)
+                .frame(width: 56, height: 56)
                 .background(color.opacity(0.1))
-                .cornerRadius(12)
+                .cornerRadius(16)
             Text(title)
                 .font(.caption)
                 .foregroundColor(.cfTextSecondary)

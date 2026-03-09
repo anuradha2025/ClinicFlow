@@ -10,6 +10,7 @@ import SwiftUI
 struct DoctorProfileView: View {
     let doctor: Doctor
     @State private var navigateToBook = false
+    @EnvironmentObject var appState: AppState
 
     var body: some View {
         ScrollView {

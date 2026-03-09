@@ -11,49 +11,63 @@ struct MyAppointmentsView: View {
     @State private var selectedTab = 0
     private let allAppointments = MockDataService.shared.appointments
 
-    var todayAppointments: [Appointment] {
-        allAppointments.filter {
-            $0.status == .upcoming &&
-            Calendar.current.isDateInToday($0.date)
-        }
-    }
-
     var upcomingAppointments: [Appointment] {
-        allAppointments.filter {
-            $0.status == .upcoming &&
-            !Calendar.current.isDateInToday($0.date)
-        }
+        allAppointments
+            .filter { $0.status == .upcoming }
+            .sorted { $0.date < $1.date }
     }
 
     var previousAppointments: [Appointment] {
-        allAppointments.filter {
-            $0.status == .completed || $0.status == .cancelled
-        }
+        allAppointments
+            .filter { $0.status == .completed || $0.status == .cancelled }
+            .sorted { $0.date > $1.date }
     }
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                Picker("", selection: $selectedTab) {
-                    Text("Today").tag(0)
-                    Text("Upcoming").tag(1)
-                    Text("Previous").tag(2)
+
+                // Apple-style Segmented Picker
+                HStack(spacing: 4) {
+                    AppointmentTabPill(
+                        title: "Upcoming",
+                        count: upcomingAppointments.count,
+                        isSelected: selectedTab == 0
+                    ) { selectedTab = 0 }
+
+                    AppointmentTabPill(
+                        title: "Previous",
+                        count: previousAppointments.count,
+                        isSelected: selectedTab == 1
+                    ) { selectedTab = 1 }
                 }
-                .pickerStyle(.segmented)
-                .padding()
+                .padding(4)
+                .background(Color(.systemGray5))
+                .cornerRadius(14)
+                .padding(.horizontal)
+                .padding(.top, 8)
+                .padding(.bottom, 16)
 
                 ScrollView {
-                    LazyVStack(spacing: 12) {
-                        switch selectedTab {
-                        case 0:
-                            appointmentList(todayAppointments, emptyMessage: "No appointments today")
-                        case 1:
-                            appointmentList(upcomingAppointments, emptyMessage: "No upcoming appointments")
-                        default:
-                            appointmentList(previousAppointments, emptyMessage: "No previous appointments")
+                    LazyVStack(spacing: 14) {
+                        if selectedTab == 0 {
+                            appointmentList(
+                                upcomingAppointments,
+                                emptyIcon: "calendar.badge.clock",
+                                emptyMessage: "No upcoming appointments",
+                                emptySubtitle: "Book an appointment with a doctor"
+                            )
+                        } else {
+                            appointmentList(
+                                previousAppointments,
+                                emptyIcon: "clock.arrow.circlepath",
+                                emptyMessage: "No previous appointments",
+                                emptySubtitle: "Your completed appointments will appear here"
+                            )
                         }
                     }
-                    .padding(.bottom, 20)
+                    .padding(.horizontal)
+                    .padding(.bottom, 24)
                 }
             }
             .background(Color(.systemGray6))
@@ -62,24 +76,28 @@ struct MyAppointmentsView: View {
     }
 
     @ViewBuilder
-    func appointmentList(_ list: [Appointment], emptyMessage: String) -> some View {
+    func appointmentList(_ list: [Appointment],
+                         emptyIcon: String,
+                         emptyMessage: String,
+                         emptySubtitle: String) -> some View {
         if list.isEmpty {
-            VStack(spacing: 12) {
-                Image(systemName: "calendar.badge.exclamationmark")
-                    .font(.system(size: 50))
-                    .foregroundColor(.gray.opacity(0.4))
+            VStack(spacing: 14) {
+                Image(systemName: emptyIcon)
+                    .font(.system(size: 52))
+                    .foregroundColor(.cfPrimary.opacity(0.3))
                 Text(emptyMessage)
+                    .font(.headline)
+                    .foregroundColor(.cfTextPrimary)
+                Text(emptySubtitle)
+                    .font(.subheadline)
                     .foregroundColor(.cfTextSecondary)
+                    .multilineTextAlignment(.center)
             }
             .frame(maxWidth: .infinity)
-            .padding(.top, 60)
+            .padding(.top, 80)
         } else {
             ForEach(list) { appointment in
-                NavigationLink(destination: destinationView(for: appointment)) {
-                    AppointmentCard(appointment: appointment)
-                }
-                .buttonStyle(PlainButtonStyle())
-                .padding(.horizontal)
+                ImprovedAppointmentCard(appointment: appointment)
             }
         }
     }
@@ -95,3 +113,4 @@ struct MyAppointmentsView: View {
         }
     }
 }
+

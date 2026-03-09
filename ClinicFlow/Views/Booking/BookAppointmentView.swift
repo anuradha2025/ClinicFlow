@@ -10,6 +10,7 @@ import SwiftUI
 struct BookAppointmentView: View {
     @StateObject private var vm: BookAppointmentViewModel
     @State private var navigateToPayment = false
+    @EnvironmentObject var appState: AppState
 
     init(doctor: Doctor) {
         _vm = StateObject(wrappedValue: BookAppointmentViewModel(doctor: doctor))

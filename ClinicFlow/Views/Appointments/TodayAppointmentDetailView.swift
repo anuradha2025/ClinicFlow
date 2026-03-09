@@ -38,7 +38,7 @@ struct TodayAppointmentDetailView: View {
                     .padding(.horizontal)
                 } else {
                     HStack {
-                        Image(systemName: "checkmark.circle.fill")
+                        Image(systemName: "checkmark.seal.fill")
                             .foregroundColor(.cfSuccess)
                         Text("Checked In Successfully")
                             .fontWeight(.semibold)
@@ -46,10 +46,47 @@ struct TodayAppointmentDetailView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
-                    .background(Color.cfSuccess.opacity(0.1))
+                    .background(Color.white)
                     .cornerRadius(12)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.cfSuccess, lineWidth: 1.5)
+                    )
+                    .shadow(color: Color.cfSuccess.opacity(0.15), radius: 8)
                     .padding(.horizontal)
                 }
+                
+                // Reschedule Notice
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundColor(.cfWarning)
+                        Text("Reschedule Notice")
+                            .font(.subheadline.bold())
+                    }
+                    Text("Unfortunately, Dr. \(appointment.doctor.name.components(separatedBy: " ").last ?? "") has requested to reschedule your appointment by 30 mins. Would you like to re-schedule? No extra charge will be applied.")
+                        .font(.caption)
+                        .foregroundColor(.cfTextSecondary)
+                        .lineSpacing(3)
+
+                    NavigationLink(destination: BookAppointmentView(doctor: appointment.doctor)) {
+                        Text("Re-Schedule")
+                            .font(.subheadline.bold())
+                            .foregroundColor(.cfPrimary)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 10)
+                            .background(Color.white)
+                            .cornerRadius(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.cfPrimary, lineWidth: 1.5)
+                            )
+                    }
+                }
+                .padding()
+                .background(Color.cfWarning.opacity(0.08))
+                .cornerRadius(16)
+                .padding(.horizontal)
 
                 // Queue Stats
                 HStack(spacing: 0) {
@@ -72,47 +109,59 @@ struct TodayAppointmentDetailView: View {
                 .padding(.horizontal)
 
                 // Queue Status List
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Queue Status")
-                        .font(.headline)
-                        .padding(.horizontal)
+                if !appointment.queueEntries.isEmpty {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Queue Status")
+                            .font(.headline)
+                            .padding(.horizontal)
 
-                    VStack(spacing: 0) {
-                        HStack {
-                            Text("Appointment Number")
-                                .font(.caption)
-                                .foregroundColor(.cfTextSecondary)
-                            Spacer()
-                            Text("Status")
-                                .font(.caption)
-                                .foregroundColor(.cfTextSecondary)
-                        }
-                        .padding(.horizontal)
-                        .padding(.bottom, 8)
+                        VStack(spacing: 0) {
 
-                        ForEach(appointment.queueEntries) { entry in
+                            // Header Row
                             HStack {
-                                Text("\(entry.id)")
-                                    .font(.subheadline.bold())
-                                    .frame(width: 30)
-                                Text(entry.time)
-                                    .font(.caption)
+                                Text("Appointment Number")
+                                    .font(.caption.bold())
                                     .foregroundColor(.cfTextSecondary)
                                 Spacer()
-                                QueueStatusPill(status: entry.status)
+                                Text("Status")
+                                    .font(.caption.bold())
+                                    .foregroundColor(.cfTextSecondary)
                             }
-                            .padding(.horizontal)
-                            .padding(.vertical, 10)
+                            .padding(.horizontal, 16)
+                            .padding(.top, 14)
+                            .padding(.bottom, 10)
 
-                            if entry.id != appointment.queueEntries.last?.id {
-                                Divider().padding(.horizontal)
+                            Divider()
+                                .padding(.horizontal, 16)
+
+                            // Queue Entries
+                            ForEach(appointment.queueEntries) { entry in
+                                HStack {
+                                    Text("\(entry.id)")
+                                        .font(.subheadline.bold())
+                                        .foregroundColor(.cfTextPrimary)
+                                        .frame(width: 24, alignment: .leading)
+                                    Text(entry.time)
+                                        .font(.subheadline)
+                                        .foregroundColor(.cfTextSecondary)
+                                        .padding(.leading, 8)
+                                    Spacer()
+                                    QueueStatusPill(status: entry.status)
+                                }
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 14)
+
+                                if entry.id != appointment.queueEntries.last?.id {
+                                    Divider()
+                                        .padding(.horizontal, 16)
+                                }
                             }
                         }
+                        .background(Color.white)
+                        .cornerRadius(16)
+                        .shadow(color: .black.opacity(0.05), radius: 8)
+                        .padding(.horizontal)
                     }
-                    .background(Color.white)
-                    .cornerRadius(16)
-                    .shadow(color: .black.opacity(0.05), radius: 8)
-                    .padding(.horizontal)
                 }
             }
             .padding(.vertical)

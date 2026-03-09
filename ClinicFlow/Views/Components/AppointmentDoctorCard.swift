@@ -10,6 +10,10 @@ import SwiftUI
 struct AppointmentDoctorCard: View {
     let appointment: Appointment
 
+    var isToday: Bool {
+        Calendar.current.isDateInToday(appointment.date)
+    }
+
     var body: some View {
         VStack(spacing: 12) {
             HStack(spacing: 12) {
@@ -20,7 +24,25 @@ struct AppointmentDoctorCard: View {
                     Text(appointment.doctor.specialty)
                         .font(.subheadline)
                         .foregroundColor(.cfTextSecondary)
-                    StatusBadge(status: appointment.status)
+
+                    // Today badge → only for today's upcoming
+                    // Completed/Cancelled badge → always show
+                    // Future upcoming → no badge
+                    if isToday && appointment.status == .upcoming {
+                        Text("Today")
+                            .font(.caption.bold())
+                            .foregroundColor(.cfPrimary)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 4)
+                            .background(Color.cfPrimaryLight)
+                            .cornerRadius(8)
+                    } else if appointment.status == .completed ||
+                              appointment.status == .cancelled ||
+                              appointment.status == .checkedIn ||
+                              appointment.status == .rescheduled {
+                        StatusBadge(status: appointment.status)
+                    }
+                    // Future upcoming: intentionally show nothing
                 }
                 Spacer()
             }
@@ -31,7 +53,7 @@ struct AppointmentDoctorCard: View {
                 Label(appointment.time, systemImage: "clock")
                     .font(.subheadline)
                     .foregroundColor(.cfTextSecondary)
-                Label("\(appointment.date.formatted(date: .abbreviated, time: .omitted))",
+                Label(appointment.date.formatted(date: .abbreviated, time: .omitted),
                       systemImage: "calendar")
                     .font(.subheadline)
                     .foregroundColor(.cfTextSecondary)

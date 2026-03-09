@@ -29,23 +29,25 @@ struct QueueEntry: Identifiable, Codable {
 }
 
 enum QueueEntryStatus: String, Codable {
-    case ongoing, new, cancelled, checkedIn
+    case finished, checkedIn, cancelled, ongoing, you
 
     var label: String {
         switch self {
-        case .ongoing:   return "On Going"
-        case .new:       return "New"
-        case .cancelled: return "Cancelled"
+        case .finished:  return "Finished"
         case .checkedIn: return "Checked In"
+        case .cancelled: return "Cancelled"
+        case .ongoing:   return "On Going"
+        case .you:       return "You"
         }
     }
 
     var color: Color {
         switch self {
-        case .ongoing:   return .cfPrimary
-        case .new:       return .cfWarning
-        case .cancelled: return .cfDanger
+        case .finished:  return .cfTextSecondary
         case .checkedIn: return .cfSuccess
+        case .cancelled: return .cfDanger
+        case .ongoing:   return .cfPrimary
+        case .you:       return .cfWarning
         }
     }
 }

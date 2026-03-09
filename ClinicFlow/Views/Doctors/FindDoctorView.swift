@@ -9,9 +9,11 @@ import SwiftUI
 
 struct FindDoctorView: View {
     @StateObject private var vm = DoctorListViewModel()
+    @EnvironmentObject var appState: AppState
+    @State private var path = NavigationPath()
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             VStack(spacing: 0) {
                 // Search Bar
                 HStack {
@@ -52,5 +54,11 @@ struct FindDoctorView: View {
             .navigationTitle("Find a Doctor")
         }
         .onAppear { vm.loadDoctors() }
+        .onChange(of: appState.popToRoot) { shouldPop in
+            if shouldPop && appState.selectedTab == 0 {
+                path = NavigationPath()
+                appState.popToRoot = false
+            }
+        }
     }
 }

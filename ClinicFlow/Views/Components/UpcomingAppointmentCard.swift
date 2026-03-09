@@ -10,9 +10,13 @@ import SwiftUI
 struct UpcomingAppointmentCard: View {
     let appointment: Appointment
 
+    var isToday: Bool {
+        Calendar.current.isDateInToday(appointment.date)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack {
+            HStack(spacing: 12) {
                 DoctorAvatarView(imageName: appointment.doctor.imageName, size: 44)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(appointment.doctor.name)
@@ -23,7 +27,17 @@ struct UpcomingAppointmentCard: View {
                         .foregroundColor(.cfTextSecondary)
                 }
                 Spacer()
-                StatusBadge(status: appointment.status)
+
+                // Only show "Today" badge for actual today appointments
+                if isToday {
+                    Text("Today")
+                        .font(.caption.bold())
+                        .foregroundColor(.cfPrimary)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(Color.cfPrimaryLight)
+                        .cornerRadius(8)
+                }
             }
 
             Divider()
@@ -33,7 +47,7 @@ struct UpcomingAppointmentCard: View {
                     .font(.caption)
                     .foregroundColor(.cfTextSecondary)
                 Spacer()
-                Text(appointment.date, style: .date)
+                Text(appointment.date.formatted(date: .long, time: .omitted))
                     .font(.caption)
                     .foregroundColor(.cfTextSecondary)
             }

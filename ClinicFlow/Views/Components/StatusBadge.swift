@@ -12,7 +12,7 @@ struct StatusBadge: View {
 
     var label: String {
         switch status {
-        case .upcoming:    return "Today"
+        case .upcoming:    return "Upcoming"
         case .checkedIn:   return "Checked In"
         case .completed:   return "Completed"
         case .cancelled:   return "Cancelled"
