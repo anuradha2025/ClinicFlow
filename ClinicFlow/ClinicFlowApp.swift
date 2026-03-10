@@ -12,6 +12,7 @@ struct ClinicFlowApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(AppNavigation())
         }
     }
 }
