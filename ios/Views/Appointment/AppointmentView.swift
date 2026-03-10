@@ -346,6 +346,8 @@ struct ConfirmRow: View {
 }
 
 #Preview {
-    AppointmentView()
-        .environmentObject(AuthViewModel())
+    NavigationStack {
+        AppointmentView()
+    }
+    .environmentObject(AuthViewModel())
 }

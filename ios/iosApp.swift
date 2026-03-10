@@ -20,9 +20,11 @@ struct RootView: View {
     var body: some View {
         Group {
             if authVM.isLoggedIn {
-                AppointmentView()
-            } else {
-                SplashView() 
+                NavigationStack {
+                    AppointmentView()
+                }
+            }else {
+                SplashView()
             }
         }
         .animation(.easeInOut, value: authVM.isLoggedIn)
