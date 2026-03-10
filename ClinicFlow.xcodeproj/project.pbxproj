@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BEEF20562F5C1DB3000E79F9 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = BEEF20552F5C1DB3000E79F9 /* SDWebImageSwiftUI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		BEB68D8E2F5BF6D40002ABD1 /* ClinicFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClinicFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEEF20562F5C1DB3000E79F9 /* SDWebImageSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = ClinicFlow;
 			packageProductDependencies = (
+				BEEF20552F5C1DB3000E79F9 /* SDWebImageSwiftUI */,
 			);
 			productName = ClinicFlow;
 			productReference = BEB68D8E2F5BF6D40002ABD1 /* ClinicFlow.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = BEB68D852F5BF6D40002ABD1;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BEEF20542F5C1DB3000E79F9 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BEB68D8F2F5BF6D40002ABD1 /* Products */;
 			projectDirPath = "";
@@ -328,6 +337,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BEEF20542F5C1DB3000E79F9 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BEEF20552F5C1DB3000E79F9 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEEF20542F5C1DB3000E79F9 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BEB68D862F5BF6D40002ABD1 /* Project object */;
 }
