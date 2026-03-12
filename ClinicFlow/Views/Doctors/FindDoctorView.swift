@@ -11,10 +11,12 @@ struct FindDoctorView: View {
     @StateObject private var vm = DoctorListViewModel()
     @EnvironmentObject var appState: AppState
     @State private var path = NavigationPath()
+    @State private var navigationKey = 0
 
     var body: some View {
         NavigationStack(path: $path) {
             ZStack(alignment: .top) {
+
                 Color.cfBg.ignoresSafeArea()
 
                 VStack(spacing: 0) {
@@ -51,10 +53,11 @@ struct FindDoctorView: View {
             }
             .navigationTitle("Find a Doctor")
         }
+        .id(navigationKey)
         .onAppear { vm.loadDoctors() }
         .onChange(of: appState.popToRoot) { shouldPop in
             if shouldPop && appState.selectedTab == 0 {
-                path = NavigationPath()
+                navigationKey += 1  // rotates the NavigationStack's id, clearing all pushed views
                 appState.popToRoot = false
             }
         }
