@@ -108,7 +108,7 @@ struct PreviousAppointmentDetailView: View {
                                 }
                             }
 
-                            Button {} label: {
+                            NavigationLink(destination: AppointmentLaboratoryReferralView(appointment: appointment)) {
                                 HStack {
                                     Text("Proceed to Laboratory")
                                         .font(.subheadline.bold())
