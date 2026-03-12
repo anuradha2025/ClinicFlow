@@ -120,56 +120,57 @@ struct NotificationsView: View {
 
             VStack(spacing: 0) {
 
-                // Header
-                ZStack {
+                // Header — presented as a sheet, so no status bar to account for
+                HStack {
+                    Button { isPresented = false } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundColor(.cfTextPrimary)
+                            .frame(width: 44, height: 44)
+                            .background(Color.cfBg)
+                            .clipShape(Circle())
+                    }
+                    .accessibilityLabel("Close")
+
+                    Spacer()
+
+                    VStack(spacing: 2) {
+                        Text("Notifications")
+                            .font(.system(size: 17, weight: .bold))
+                            .foregroundColor(.cfTextPrimary)
+                        if unreadCount > 0 {
+                            Text("\(unreadCount) unread")
+                                .font(.system(size: 11))
+                                .foregroundColor(.cfBlue)
+                        }
+                    }
+
+                    Spacer()
+
+                    Button {
+                        withAnimation {
+                            for i in notifications.indices { notifications[i].isRead = true }
+                        }
+                    } label: {
+                        Text("All Read")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundColor(unreadCount > 0 ? .cfBlue : .cfTextTertiary)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(Color.cfBlueLight)
+                            .cornerRadius(8)
+                    }
+                    .disabled(unreadCount == 0)
+                    .accessibilityLabel("Mark all as read")
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 16)
+                .padding(.bottom, 14)
+                .background(
                     Color.cfCard
                         .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 3)
-
-                    HStack {
-                        Button { isPresented = false } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 15, weight: .semibold))
-                                .foregroundColor(.cfTextPrimary)
-                                .frame(width: 40, height: 40)
-                                .background(Color.cfBg)
-                                .clipShape(Circle())
-                        }
-
-                        Spacer()
-
-                        VStack(spacing: 2) {
-                            Text("Notifications")
-                                .font(.system(size: 17, weight: .bold))
-                                .foregroundColor(.cfTextPrimary)
-                            if unreadCount > 0 {
-                                Text("\(unreadCount) unread")
-                                    .font(.system(size: 11))
-                                    .foregroundColor(.cfBlue)
-                            }
-                        }
-
-                        Spacer()
-
-                        Button {
-                            withAnimation {
-                                for i in notifications.indices { notifications[i].isRead = true }
-                            }
-                        } label: {
-                            Text("All Read")
-                                .font(.system(size: 12, weight: .semibold))
-                                .foregroundColor(unreadCount > 0 ? .cfBlue : .cfTextTertiary)
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 6)
-                                .background(Color.cfBlueLight)
-                                .cornerRadius(8)
-                        }
-                        .disabled(unreadCount == 0)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 56)
-                    .padding(.bottom, 14)
-                }
-                .fixedSize(horizontal: false, vertical: true)
+                        .ignoresSafeArea(edges: .top)
+                )
 
                 // Filter chips
                 ScrollView(.horizontal, showsIndicators: false) {

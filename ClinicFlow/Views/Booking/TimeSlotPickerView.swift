@@ -14,23 +14,27 @@ struct TimeSlotPickerView: View {
     var body: some View {
         HStack(spacing: 12) {
             ForEach(slots) { slot in
-                VStack(spacing: 4) {
-                    Text(slot.time)
-                        .font(.subheadline.bold())
-                    Text("\(slot.availableCount)")
-                        .font(.caption)
-                        .foregroundColor(.cfTextSecondary)
+                Button { selected = slot.time } label: {
+                    VStack(spacing: 4) {
+                        Text(slot.time)
+                            .font(.subheadline.bold())
+                        Text("\(slot.availableCount)")
+                            .font(.caption)
+                            .foregroundColor(selected == slot.time ? .white.opacity(0.8) : .cfTextSecondary)
+                    }
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 16)
+                    .background(selected == slot.time ? Color.cfBlue : Color.white)
+                    .foregroundColor(selected == slot.time ? .white : .cfTextPrimary)
+                    .cornerRadius(12)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(selected == slot.time ? Color.cfBlue : Color.gray.opacity(0.2), lineWidth: 1)
+                    )
+                    .contentShape(Rectangle())
                 }
-                .padding(.vertical, 12)
-                .padding(.horizontal, 16)
-                .background(selected == slot.time ? Color.cfPrimary : Color.white)
-                .foregroundColor(selected == slot.time ? .white : .cfTextPrimary)
-                .cornerRadius(12)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(selected == slot.time ? Color.cfPrimary : Color.gray.opacity(0.2), lineWidth: 1)
-                )
-                .onTapGesture { selected = slot.time }
+                .buttonStyle(ScaleButtonStyle())
+                .accessibilityAddTraits(selected == slot.time ? .isSelected : [])
             }
         }
         .padding(.horizontal)

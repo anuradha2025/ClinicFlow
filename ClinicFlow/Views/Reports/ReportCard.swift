@@ -61,12 +61,13 @@ struct ReportCard: View {
                 ZStack {
                     Circle()
                         .fill(downloaded ? Color.cfSuccess.opacity(0.12) : Color.cfBlueLight)
-                        .frame(width: 38, height: 38)
+                        .frame(width: 44, height: 44)
                     Image(systemName: downloaded ? "checkmark" : "arrow.down")
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(downloaded ? .cfSuccess : .cfBlue)
                 }
             }
+            .accessibilityLabel(downloaded ? "Downloaded" : "Download \(report.title)")
         }
         .padding(14)
         .background(Color.cfCard)

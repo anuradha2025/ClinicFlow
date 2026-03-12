@@ -19,20 +19,25 @@ struct ScheduleCalendarView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
                 ForEach(next7Days, id: \.self) { date in
-                    VStack(spacing: 4) {
-                        Text(date, format: .dateTime.weekday(.abbreviated))
-                            .font(.caption)
-                        Text(date, format: .dateTime.day())
-                            .font(.headline.bold())
-                    }
-                    .padding(10)
-                    .background(Calendar.current.isDate(selectedDate, inSameDayAs: date) ? Color.cfPrimary : Color.white)
-                    .foregroundColor(Calendar.current.isDate(selectedDate, inSameDayAs: date) ? .white : .cfTextPrimary)
-                    .cornerRadius(10)
-                    .onTapGesture {
+                    let isSelected = Calendar.current.isDate(selectedDate, inSameDayAs: date)
+                    Button {
                         selectedDate = date
                         onDateSelected(date)
+                    } label: {
+                        VStack(spacing: 4) {
+                            Text(date, format: .dateTime.weekday(.abbreviated))
+                                .font(.caption)
+                            Text(date, format: .dateTime.day())
+                                .font(.headline.bold())
+                        }
+                        .padding(10)
+                        .background(isSelected ? Color.cfBlue : Color.white)
+                        .foregroundColor(isSelected ? .white : .cfTextPrimary)
+                        .cornerRadius(10)
+                        .contentShape(Rectangle())
                     }
+                    .buttonStyle(ScaleButtonStyle())
+                    .accessibilityAddTraits(isSelected ? .isSelected : [])
                 }
             }
             .padding(.horizontal)

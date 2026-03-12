@@ -103,7 +103,7 @@ struct PaymentView: View {
             }
             .padding(.vertical)
         }
-        .background(Color(.systemGray6))
+        .background(Color.cfBg)
         .navigationTitle("Payment")
         .navigationBarTitleDisplayMode(.inline)
     }

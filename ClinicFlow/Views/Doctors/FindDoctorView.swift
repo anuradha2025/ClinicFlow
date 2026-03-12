@@ -21,16 +21,9 @@ struct FindDoctorView: View {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 0) {
                             // Search Bar
-                            HStack {
-                                Image(systemName: "magnifyingglass")
-                                    .foregroundColor(.gray)
-                                TextField("Search doctors, specialties...", text: $vm.searchText)
-                            }
-                            .padding(12)
-                            .background(Color.white)
-                            .cornerRadius(12)
-                            .padding(.horizontal)
-                            .padding(.top, 16)
+                            CFSearchBar(text: $vm.searchText, placeholder: "Search doctors, specialties…")
+                                .padding(.horizontal)
+                                .padding(.top, 16)
 
                             // Specialty Filter
                             SpecialtyFilterBar(

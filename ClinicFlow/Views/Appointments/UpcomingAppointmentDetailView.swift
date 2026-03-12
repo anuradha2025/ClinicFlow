@@ -95,7 +95,7 @@ struct UpcomingAppointmentDetailView: View {
                             }
                             .padding(.horizontal, 16)
                             .padding(.vertical, 10)
-                            .background(Color(.systemGray6))
+                            .background(Color.cfBg)
 
                             // Queue Entries
                             ForEach(appointment.queueEntries) { entry in
@@ -153,7 +153,7 @@ struct UpcomingAppointmentDetailView: View {
             }
             .padding(.vertical)
         }
-        .background(Color(.systemGray6))
+        .background(Color.cfBg)
         .navigationTitle("Appointment Details")
         .navigationBarTitleDisplayMode(.inline)
     }

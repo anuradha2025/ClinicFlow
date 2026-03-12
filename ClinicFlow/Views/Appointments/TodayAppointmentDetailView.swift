@@ -166,7 +166,7 @@ struct TodayAppointmentDetailView: View {
             }
             .padding(.vertical)
         }
-        .background(Color(.systemGray6))
+        .background(Color.cfBg)
         .navigationTitle("Appointment Details")
         .navigationBarTitleDisplayMode(.inline)
     }

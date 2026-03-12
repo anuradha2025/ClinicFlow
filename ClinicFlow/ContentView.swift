@@ -55,7 +55,7 @@ struct ContentView: View {
                         .tabItem { Label("Laboratory", systemImage: "cross.case.fill") }
                         .tag(4)
                 }
-                .accentColor(.cfBlue)
+                .tint(.cfBlue)
                     .transition(.move(edge: .leading))
             }
         }

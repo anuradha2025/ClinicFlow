@@ -19,61 +19,64 @@ struct ScreenHeader: View {
     @State private var showNotifications = false
 
     var body: some View {
-        ZStack {
-            Color.cfCard
-                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 3)
+        HStack(spacing: 0) {
 
-            HStack(spacing: 0) {
-
-                // Leading — back button or spacer
-                if let back = onBack {
-                    Button(action: back) {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(.cfTextPrimary)
-                            .frame(width: 40, height: 40)
-                            .background(Color.cfBg)
-                            .clipShape(Circle())
-                    }
-                } else {
-                    Spacer().frame(width: 40)
+            // Leading — back button or spacer
+            if let back = onBack {
+                Button(action: back) {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(.cfTextPrimary)
+                        .frame(width: 44, height: 44)
+                        .background(Color.cfBg)
+                        .clipShape(Circle())
                 }
-
-                Spacer()
-
-                Text(title)
-                    .font(.system(size: 17, weight: .bold))
-                    .foregroundColor(.cfTextPrimary)
-
-                Spacer()
-
-                // Trailing — bell or spacer
-                if showBell {
-                    Button { showNotifications = true } label: {
-                        ZStack(alignment: .topTrailing) {
-                            Image(systemName: "bell.fill")
-                                .font(.system(size: 18))
-                                .foregroundColor(.cfTextPrimary)
-                            // Unread badge
-                            Circle()
-                                .fill(Color.cfDanger)
-                                .frame(width: 9, height: 9)
-                                .offset(x: 3, y: -2)
-                        }
-                    }
-                    .frame(width: 40, height: 40)
-                    .sheet(isPresented: $showNotifications) {
-                        NotificationsView(isPresented: $showNotifications)
-                    }
-                } else {
-                    Spacer().frame(width: 40)
-                }
+                .accessibilityLabel("Back")
+            } else {
+                Spacer().frame(width: 44)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 56)
-            .padding(.bottom, 14)
+
+            Spacer()
+
+            Text(title)
+                .font(.system(size: 17, weight: .bold))
+                .foregroundColor(.cfTextPrimary)
+
+            Spacer()
+
+            // Trailing — bell or spacer
+            if showBell {
+                Button { showNotifications = true } label: {
+                    ZStack(alignment: .topTrailing) {
+                        Image(systemName: "bell.fill")
+                            .font(.system(size: 18))
+                            .foregroundColor(.cfTextPrimary)
+                        // Unread badge
+                        Circle()
+                            .fill(Color.cfDanger)
+                            .frame(width: 9, height: 9)
+                            .offset(x: 3, y: -2)
+                    }
+                }
+                .frame(width: 44, height: 44)
+                .accessibilityLabel("Notifications")
+                .sheet(isPresented: $showNotifications) {
+                    NotificationsView(isPresented: $showNotifications)
+                        .presentationDetents([.medium, .large])
+                        .presentationDragIndicator(.visible)
+                }
+            } else {
+                Spacer().frame(width: 44)
+            }
         }
-        .fixedSize(horizontal: false, vertical: true)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        // Extend the card background behind the status bar automatically
+        .background(
+            Color.cfCard
+                .ignoresSafeArea(edges: .top)
+                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 3)
+        )
     }
 }
 

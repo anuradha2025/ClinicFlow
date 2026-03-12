@@ -79,18 +79,20 @@ struct DoctorProfileView: View {
                 // Book Button
                 NavigationLink(destination: BookAppointmentView(doctor: doctor)) {
                     Text("Book Appointment")
-                        .fontWeight(.semibold)
+                        .font(.system(size: 15, weight: .semibold))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(Color.cfPrimary)
-                        .cornerRadius(12)
+                        .padding(.vertical, 15)
+                        .background(Color.cfBlue)
+                        .cornerRadius(16)
+                        .shadow(color: Color.cfBlue.opacity(0.30), radius: 8, x: 0, y: 4)
+                        .contentShape(Rectangle())
                 }
                 .padding(.horizontal)
             }
             .padding(.vertical)
         }
-        .background(Color(.systemGray6))
+        .background(Color.cfBg)
         .navigationTitle(doctor.name)
         .navigationBarTitleDisplayMode(.inline)
     }

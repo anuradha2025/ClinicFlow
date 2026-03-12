@@ -62,7 +62,7 @@ struct BookingView: View {
                                            in: Date()...,
                                            displayedComponents: .date)
                                     .datePickerStyle(.graphical)
-                                    .accentColor(.cfBlue)
+                                    .tint(.cfBlue)
                             }
                         }
 

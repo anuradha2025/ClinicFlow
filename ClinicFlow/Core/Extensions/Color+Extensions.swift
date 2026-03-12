@@ -9,11 +9,12 @@
 import SwiftUI
 
 extension Color {
-    // Legacy primary palette still used by non-lab flows
-    static let cfPrimary      = Color(hex: "#2563EB")   // Blue
-    static let cfPrimaryLight = Color(hex: "#EFF6FF")
-    static let cfBackground   = Color(hex: "#F8FAFF")
-    static let cfCardBg       = Color.white
+    // Aliases — all views should prefer the semantic values in Colors.swift.
+    // These exist to keep older code compiling without changes.
+    static let cfPrimary      = Color.cfBlue
+    static let cfPrimaryLight = Color.cfBlueLight
+    static let cfBackground   = Color.cfBg
+    static let cfCardBg       = Color.cfCard
 
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)

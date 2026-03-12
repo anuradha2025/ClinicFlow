@@ -14,6 +14,8 @@ struct PrimaryButton: View {
     var color:  Color   = .cfBlue
     let action: () -> Void
 
+    @Environment(\.isEnabled) private var isEnabled
+
     var body: some View {
         Button(action: action) {
             HStack(spacing: 8) {
@@ -23,12 +25,10 @@ struct PrimaryButton: View {
             .foregroundColor(.white)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 15)
-            .background(
-                LinearGradient(colors: [color, color.opacity(0.78)],
-                               startPoint: .leading, endPoint: .trailing)
-            )
+            .background(isEnabled ? color : Color.cfTextTertiary)
             .cornerRadius(16)
-            .shadow(color: color.opacity(0.38), radius: 10, x: 0, y: 5)
+            .shadow(color: isEnabled ? color.opacity(0.30) : .clear, radius: 8, x: 0, y: 4)
+            .contentShape(Rectangle())
         }
         .buttonStyle(ScaleButtonStyle())
     }

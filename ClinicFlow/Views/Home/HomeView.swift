@@ -59,6 +59,7 @@ struct HomeView: View {
                                 }
                             }
                         }
+                        .accessibilityLabel(unreadCount > 0 ? "Notifications, \(unreadCount) unread" : "Notifications")
                     }
                     .padding(.horizontal)
 

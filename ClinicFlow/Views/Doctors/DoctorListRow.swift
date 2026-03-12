@@ -24,7 +24,9 @@ struct DoctorListRow: View {
             Button(action: onFavorite) {
                 Image(systemName: doctor.isFavorite ? "heart.fill" : "heart")
                     .foregroundColor(doctor.isFavorite ? .cfDanger : .gray)
+                    .frame(width: 44, height: 44)
             }
+            .accessibilityLabel(doctor.isFavorite ? "Remove from favourites" : "Add to favourites")
         }
         .padding()
         .background(Color.white)

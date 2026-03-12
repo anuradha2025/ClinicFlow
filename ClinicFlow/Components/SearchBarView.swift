@@ -25,8 +25,9 @@ struct CFSearchBar: View {
                 Button { text = "" } label: {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundColor(.cfTextTertiary)
-                        .font(.system(size: 14))
+                        .font(.system(size: 16))
                 }
+                .accessibilityLabel("Clear search")
             }
         }
         .padding(.horizontal, 14)
