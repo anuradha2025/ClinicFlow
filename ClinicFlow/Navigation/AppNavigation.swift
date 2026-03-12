@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 class AppNavigation: ObservableObject {
+    @Published var referralAppointment: Appointment? = nil
     @Published var selectedTest: LabTest? = nil
     @Published var showBooking:  Bool     = false
     @Published var showPayment:  Bool     = false
@@ -22,5 +23,10 @@ class AppNavigation: ObservableObject {
         showBooking  = false
         showPayment  = false
         showSuccess  = false
+    }
+
+    func exitLabFlow() {
+        referralAppointment = nil
+        reset()
     }
 }

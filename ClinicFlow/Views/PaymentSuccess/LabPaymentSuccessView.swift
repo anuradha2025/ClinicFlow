@@ -134,7 +134,7 @@ struct LabPaymentSuccessView: View {
             VStack(spacing: 10) {
                 CFDivider()
                 PrimaryButton(title: "View My Reports", icon: "doc.text.fill") {
-                    nav.reset()
+                    nav.exitLabFlow()
                     appState.selectedTab = 3  // Reports tab
                 }
                 SecondaryButton(title: "Back to Laboratory", icon: "cross.case.fill") {

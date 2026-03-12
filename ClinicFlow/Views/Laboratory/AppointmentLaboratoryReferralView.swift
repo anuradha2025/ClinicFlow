@@ -27,23 +27,28 @@ struct AppointmentLaboratoryReferralView: View {
         ZStack(alignment: .bottom) {
             Color.cfBg.ignoresSafeArea()
 
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 16) {
-                    referralSummaryCard
-                    requiredTestsCard
-                    preparationCard
+            VStack(spacing: 0) {
+                ScreenHeader(title: "Laboratory", onBack: { nav.referralAppointment = nil })
 
-                    Spacer().frame(height: 110)
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 16) {
+                        referralSummaryCard
+                        requiredTestsCard
+                        preparationCard
+
+                        Spacer().frame(height: 110)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 16)
+                    .padding(.bottom, 16)
                 }
-                .padding(.horizontal, 16)
-                .padding(.top, 16)
-                .padding(.bottom, 16)
             }
 
             VStack(spacing: 10) {
                 CFDivider()
 
                 PrimaryButton(title: "Open Laboratory", icon: "cross.case.fill") {
+                    nav.exitLabFlow()
                     appState.selectedTab = 4
                 }
 
@@ -55,8 +60,6 @@ struct AppointmentLaboratoryReferralView: View {
             .padding(.vertical, 16)
             .background(Color.cfCard)
         }
-        .navigationTitle("Laboratory")
-        .navigationBarTitleDisplayMode(.inline)
     }
 
     private var referralSummaryCard: some View {

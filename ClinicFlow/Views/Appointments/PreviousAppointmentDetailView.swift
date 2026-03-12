@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PreviousAppointmentDetailView: View {
     let appointment: Appointment
+    @EnvironmentObject var nav: AppNavigation
 
     var isCancelled: Bool {
         appointment.status == .cancelled
@@ -108,7 +109,9 @@ struct PreviousAppointmentDetailView: View {
                                 }
                             }
 
-                            NavigationLink(destination: AppointmentLaboratoryReferralView(appointment: appointment)) {
+                            Button {
+                                nav.referralAppointment = appointment
+                            } label: {
                                 HStack {
                                     Text("Proceed to Laboratory")
                                         .font(.subheadline.bold())
@@ -120,6 +123,7 @@ struct PreviousAppointmentDetailView: View {
                                 .background(Color.cfSuccess)
                                 .cornerRadius(10)
                             }
+                            .buttonStyle(PlainButtonStyle())
                         }
                         .padding()
                         .background(Color.white)
