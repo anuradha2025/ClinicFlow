@@ -9,9 +9,10 @@ import SwiftUI
 
 struct MainTabView: View {
     @EnvironmentObject var nav: AppNavigation
+    @EnvironmentObject var appState: AppState
 
     var body: some View {
-        TabView(selection: $nav.selectedTab) {
+        TabView(selection: $appState.selectedTab) {
             HomeView()
                 .tabItem { Label("Home", systemImage: "house.fill") }
                 .tag(0)

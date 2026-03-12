@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var nav: AppNavigation
+    @EnvironmentObject var appState: AppState
 
     var body: some View {
         ZStack {
@@ -16,6 +17,7 @@ struct ContentView: View {
                 if nav.showSuccess {
                     LabPaymentSuccessView(test: test)
                         .environmentObject(nav)
+                        .environmentObject(appState)
                         .transition(.move(edge: .trailing))
                 } else if nav.showPayment {
                     LabPaymentView(test: test)
@@ -33,6 +35,7 @@ struct ContentView: View {
             } else {
                 MainTabView()
                     .environmentObject(nav)
+                    .environmentObject(appState)
                     .transition(.move(edge: .leading))
             }
         }

@@ -10,6 +10,7 @@ import SwiftUI
 struct LabPaymentSuccessView: View {
     let test: LabTest
     @EnvironmentObject var nav: AppNavigation
+    @EnvironmentObject var appState: AppState
 
     @State private var checkScale: CGFloat  = 0.4
     @State private var checkOpacity: Double = 0
@@ -134,7 +135,7 @@ struct LabPaymentSuccessView: View {
                 CFDivider()
                 PrimaryButton(title: "View My Reports", icon: "doc.text.fill") {
                     nav.reset()
-                    nav.selectedTab = 1
+                    appState.selectedTab = 3  // Reports tab
                 }
                 SecondaryButton(title: "Back to Laboratory", icon: "cross.case.fill") {
                     nav.reset()
