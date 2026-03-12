@@ -87,8 +87,75 @@ let sampleNotifications: [CFNotification] = [
         iconColor: .cfBlue,
         type: .result,
         isRead: true
-    )
-]
+    ),
+   
+        CFNotification(
+            title: "Urine Test Reminder",
+            message: "Reminder: Collect your first morning urine sample tomorrow for your UFR test at 09:00 AM.",
+            time: "1 hour ago",
+            icon: "bell.badge.fill",
+            iconColor: .cfWarning,
+            type: .reminder,
+            isRead: false
+        ),
+        CFNotification(
+            title: "Results Ready",
+            message: "Your Urine Full Report (UFR) results are now available. Tap to view your report.",
+            time: "3 hours ago",
+            icon: "doc.text.fill",
+            iconColor: .cfBlue,
+            type: .result,
+            isRead: false
+        ),
+        CFNotification(
+            title: "Urine Culture Results",
+            message: "Your Urine Culture & Sensitivity results are ready. Please consult your doctor for antibiotic prescription.",
+            time: "Yesterday",
+            icon: "doc.text.fill",
+            iconColor: .cfBlue,
+            type: .result,
+            isRead: false
+        ),
+       
+        CFNotification(
+            title: "Special Offer",
+            message: "Get 20% off on all Urology tests including UFR, Urine Culture and Microalbumin this week!",
+            time: "2 days ago",
+            icon: "tag.fill",
+            iconColor: .cfPurple,
+            type: .promo,
+            isRead: true
+        ),
+        CFNotification(
+            title: "Payment Successful",
+            message: "Payment of Rs. 800 for Urine Full Report (UFR) has been received successfully.",
+            time: "3 days ago",
+            icon: "checkmark.seal.fill",
+            iconColor: .cfSuccess,
+            type: .system,
+            isRead: true
+        ),
+        CFNotification(
+            title: "Urine Protein Results",
+            message: "Your Urine Protein Test results are available. Download your report from My Reports.",
+            time: "4 days ago",
+            icon: "doc.text.fill",
+            iconColor: .cfBlue,
+            type: .result,
+            isRead: true
+        ),
+    CFNotification(
+            title: "ESR Results Ready",
+            message: "Your Erythrocyte Sedimentation Rate (ESR) test results are now available. Tap to view your report.",
+            time: "5 hours ago",
+            icon: "doc.text.fill",
+            iconColor: .cfBlue,
+            type: .result,
+            isRead: false
+        ),
+       
+    ]
+
 
 // MARK: - Notifications View
 struct NotificationsView: View {

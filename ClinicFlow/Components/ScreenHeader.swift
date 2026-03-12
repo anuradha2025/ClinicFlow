@@ -36,10 +36,10 @@ struct ScreenHeader: View {
                 Spacer().frame(width: 44)
             }
 
-            Spacer()
+            
 
             Text(title)
-                .font(.system(size: 17, weight: .bold))
+                .font(.system(size: 40, weight: .bold))
                 .foregroundColor(.cfTextPrimary)
 
             Spacer()

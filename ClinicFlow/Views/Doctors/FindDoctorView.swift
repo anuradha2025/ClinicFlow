@@ -52,8 +52,8 @@ struct FindDoctorView: View {
             .navigationTitle("Find a Doctor")
         }
         .onAppear { vm.loadDoctors() }
-        .onChange(of: appState.popToRoot) { shouldPop in
-            if shouldPop && appState.selectedTab == 0 {
+        .onChange(of: appState.popToRoot) { oldValue, newValue in
+            if newValue && appState.selectedTab == 0 {
                 path = NavigationPath()
                 appState.popToRoot = false
             }
