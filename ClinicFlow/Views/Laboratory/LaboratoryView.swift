@@ -25,24 +25,20 @@ struct LaboratoryView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack(alignment: .top) {
                 Color.cfBg.ignoresSafeArea()
 
                 VStack(spacing: 0) {
-
-                    // ── Header ──────────────────────────────────────────
-                    ScreenHeader(title: "Laboratory")
-
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 0) {
 
-                            // ── Search ──────────────────────────────────
+                            // Search
                             CFSearchBar(text: $searchText, placeholder: "Search tests, categories…")
                                 .padding(.horizontal, 16)
                                 .padding(.top, 16)
 
-                            // ── Category Filter ──────────────────────────
+                            // Category Filter
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 8) {
                                     ForEach(categories, id: \.self) { cat in
@@ -57,9 +53,7 @@ struct LaboratoryView: View {
                                 .padding(.vertical, 14)
                             }
 
-                         
-
-                            // ── Results count ─────────────────────────────
+                            // Results count
                             HStack {
                                 Text("\(filtered.count) test\(filtered.count == 1 ? "" : "s") available")
                                     .font(.system(size: 13))
@@ -69,7 +63,7 @@ struct LaboratoryView: View {
                             .padding(.horizontal, 16)
                             .padding(.bottom, 10)
 
-                            // ── Test List ─────────────────────────────────
+                            // Test List
                             LazyVStack(spacing: 12) {
                                 ForEach(filtered) { test in
                                     TestListCard(test: test) {
@@ -80,7 +74,6 @@ struct LaboratoryView: View {
                                 if filtered.isEmpty {
                     EmptyStateView(message: "No tests found for: " + searchText)
                                         .padding(.top, 40)
-                                        
                                 }
                             }
                             .padding(.horizontal, 16)
@@ -89,9 +82,8 @@ struct LaboratoryView: View {
                     }
                 }
             }
-            .navigationBarHidden(true)
+            .navigationTitle("Laboratory")
         }
-        .navigationViewStyle(.stack)
     }
 }
 

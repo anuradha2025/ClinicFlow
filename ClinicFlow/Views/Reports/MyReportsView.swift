@@ -19,13 +19,11 @@ struct MyReportsView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack(alignment: .top) {
                 Color.cfBg.ignoresSafeArea()
 
                 VStack(spacing: 0) {
-                    ScreenHeader(title: "My Reports")
-
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 0) {
 
@@ -70,9 +68,8 @@ struct MyReportsView: View {
                     }
                 }
             }
-            .navigationBarHidden(true)
+            .navigationTitle("My Reports")
         }
-        .navigationViewStyle(.stack)
     }
 }
 

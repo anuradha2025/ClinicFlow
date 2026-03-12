@@ -132,9 +132,9 @@ struct HomeView: View {
         }
         .onAppear { vm.loadData() }
 
-        // Notifications Sheet
+        // Notifications Sheet - use Thulani notifications
         .sheet(isPresented: $showNotifications) {
-            NotificationsOverlayView(isPresented: $showNotifications)
+            NotificationsView(isPresented: $showNotifications)
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }
