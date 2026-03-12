@@ -12,7 +12,7 @@ struct LaboratoryView: View {
     @State private var searchText    = ""
     @State private var selectedCat   = "All"
 
-    let categories = ["All", "Diabetes", "Haematology", "Cardiology", "Endocrinology", "Gastroenterology"]
+    let categories = ["All", "Diabetes", "Haematology", "Cardiology", "Endocrinology", "Gastroenterology","Urology"]
 
     var filtered: [LabTest] {
         sampleTests.filter { test in
