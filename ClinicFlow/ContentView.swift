@@ -36,9 +36,5 @@ struct ContentView: View {
                     .transition(.move(edge: .leading))
             }
         }
-        .animation(.easeInOut(duration: 0.28), value: nav.selectedTest)
-        .animation(.easeInOut(duration: 0.28), value: nav.showBooking)
-        .animation(.easeInOut(duration: 0.28), value: nav.showPayment)
-        .animation(.easeInOut(duration: 0.28), value: nav.showSuccess)
     }
 }

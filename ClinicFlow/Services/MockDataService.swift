@@ -191,8 +191,8 @@ class MockDataService {
                     PrescriptionItem(id: UUID(), name: "Salts", dosage: "550mg")
                 ],
                 labTests: [
-                    LabTest(id: UUID(), name: "Complete Blood Count (CBC)"),
-                    LabTest(id: UUID(), name: "Dengue NS1 Antigen Test")
+                    AppointmentLabTest(id: UUID(), name: "Complete Blood Count (CBC)"),
+                    AppointmentLabTest(id: UUID(), name: "Dengue NS1 Antigen Test")
                 ],
                 queueEntries: []
             ),

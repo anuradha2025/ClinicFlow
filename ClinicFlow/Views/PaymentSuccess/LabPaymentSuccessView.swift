@@ -1,8 +1,8 @@
 //
-//  PaymentSuccessView.swift
+//  LabPaymentSuccessView.swift
 //  ClinicFlow
 //
-//  Created by COBSCCOMP242P-028 on 2026-03-10.
+//  Extracted from Thulani branch payment success for laboratory flow.
 //
 
 import SwiftUI
@@ -32,7 +32,7 @@ struct LabPaymentSuccessView: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 20) {
 
-                        // ── Success Animation ─────────────────────────
+                        // Success Animation
                         VStack(spacing: 14) {
                             ZStack {
                                 // Outer ring
@@ -66,7 +66,7 @@ struct LabPaymentSuccessView: View {
                         .offset(y: contentOffset)
                         .opacity(contentOpacity)
 
-                        // ── Booking Detail Card ───────────────────────
+                        // Booking Detail Card
                         CFCard(padding: 0) {
                             VStack(spacing: 0) {
                                 // Card header
@@ -100,7 +100,7 @@ struct LabPaymentSuccessView: View {
                         .offset(y: contentOffset)
                         .opacity(contentOpacity)
 
-                        // ── Reminder Card ─────────────────────────────
+                        // Reminder Card
                         CFCard {
                             VStack(alignment: .leading, spacing: 12) {
                                 SectionLabel(text: "Pre-Test Reminders", icon: "bell.badge.fill")
@@ -129,7 +129,7 @@ struct LabPaymentSuccessView: View {
                 }
             }
 
-            // ── Bottom Buttons ─────────────────────────────────────────
+            // Bottom Buttons
             VStack(spacing: 10) {
                 CFDivider()
                 PrimaryButton(title: "View My Reports", icon: "doc.text.fill") {

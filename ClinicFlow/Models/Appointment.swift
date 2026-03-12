@@ -17,11 +17,6 @@ struct PrescriptionItem: Identifiable, Codable, Hashable {
     var dosage: String
 }
 
-struct LabTest: Identifiable, Codable, Hashable {
-    let id: UUID
-    var name: String
-}
-
 struct QueueEntry: Identifiable, Codable {
     let id: Int
     let time: String
@@ -53,6 +48,7 @@ enum QueueEntryStatus: String, Codable {
 }
 
 import SwiftUI
+
 struct Appointment: Identifiable, Codable, Hashable {
     let id: UUID
     var doctor: Doctor
@@ -62,7 +58,7 @@ struct Appointment: Identifiable, Codable, Hashable {
     var queueNumber: Int
     var estimatedWaitNumber: Int
     var prescription: [PrescriptionItem]
-    var labTests: [LabTest]
+    var labTests: [AppointmentLabTest]
     var queueEntries: [QueueEntry]
 
     static func == (lhs: Appointment, rhs: Appointment) -> Bool { lhs.id == rhs.id }
