@@ -108,3 +108,4 @@ struct PaymentView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
+

@@ -10,11 +10,13 @@ import SwiftUI
 @main
 struct ClinicFlowApp: App {
     @StateObject private var appState = AppState()
+    @StateObject private var nav = AppNavigation()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(appState)
+                .environmentObject(nav)
         }
     }
 }
