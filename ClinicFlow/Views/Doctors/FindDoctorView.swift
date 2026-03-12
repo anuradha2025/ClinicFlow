@@ -14,43 +14,48 @@ struct FindDoctorView: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            VStack(spacing: 0) {
-                // Search Bar
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                    TextField("Search doctors, specialties...", text: $vm.searchText)
-                }
-                .padding(12)
-                .background(Color.white)
-                .cornerRadius(12)
-                .padding(.horizontal)
-                .padding(.top, 8)
+            ZStack(alignment: .top) {
+                Color.cfBg.ignoresSafeArea()
 
-                // Specialty Filter
-                SpecialtyFilterBar(
-                    specialties: vm.specialties,
-                    selected: $vm.selectedSpecialty
-                )
+                VStack(spacing: 0) {
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack(spacing: 0) {
+                            // Search Bar
+                            HStack {
+                                Image(systemName: "magnifyingglass")
+                                    .foregroundColor(.gray)
+                                TextField("Search doctors, specialties...", text: $vm.searchText)
+                            }
+                            .padding(12)
+                            .background(Color.white)
+                            .cornerRadius(12)
+                            .padding(.horizontal)
+                            .padding(.top, 16)
 
-                // Doctor List
-                ScrollView {
-                    LazyVStack(spacing: 12) {
-                        ForEach(vm.filteredDoctors) { doctor in
-                            NavigationLink(destination: DoctorProfileView(doctor: doctor)) {
-                                DoctorListRow(doctor: doctor) {
-                                    vm.toggleFavorite(doctor)
+                            // Specialty Filter
+                            SpecialtyFilterBar(
+                                specialties: vm.specialties,
+                                selected: $vm.selectedSpecialty
+                            )
+
+                            // Doctor List
+                            LazyVStack(spacing: 12) {
+                                ForEach(vm.filteredDoctors) { doctor in
+                                    NavigationLink(destination: DoctorProfileView(doctor: doctor)) {
+                                        DoctorListRow(doctor: doctor) {
+                                            vm.toggleFavorite(doctor)
+                                        }
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    .padding(.horizontal)
                                 }
                             }
-                            .buttonStyle(PlainButtonStyle())
-                            .padding(.horizontal)
+                            .padding(.top, 12)
+                            .padding(.bottom, 20)
                         }
                     }
-                    .padding(.top, 12)
-                    .padding(.bottom, 20)
                 }
             }
-            .background(Color(.systemGray6))
             .navigationTitle("Find a Doctor")
         }
         .onAppear { vm.loadDoctors() }

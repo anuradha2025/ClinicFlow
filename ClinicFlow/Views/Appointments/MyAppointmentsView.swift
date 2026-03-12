@@ -25,52 +25,56 @@ struct MyAppointmentsView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
+            ZStack(alignment: .top) {
+                Color.cfBg.ignoresSafeArea()
 
-                // Apple-style Segmented Picker
-                HStack(spacing: 4) {
-                    AppointmentTabPill(
-                        title: "Upcoming",
-                        count: upcomingAppointments.count,
-                        isSelected: selectedTab == 0
-                    ) { selectedTab = 0 }
+                VStack(spacing: 0) {
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack(spacing: 0) {
+                            // Apple-style Segmented Picker
+                            HStack(spacing: 4) {
+                                AppointmentTabPill(
+                                    title: "Upcoming",
+                                    count: upcomingAppointments.count,
+                                    isSelected: selectedTab == 0
+                                ) { selectedTab = 0 }
 
-                    AppointmentTabPill(
-                        title: "Previous",
-                        count: previousAppointments.count,
-                        isSelected: selectedTab == 1
-                    ) { selectedTab = 1 }
-                }
-                .padding(4)
-                .background(Color(.systemGray5))
-                .cornerRadius(14)
-                .padding(.horizontal)
-                .padding(.top, 8)
-                .padding(.bottom, 16)
+                                AppointmentTabPill(
+                                    title: "Previous",
+                                    count: previousAppointments.count,
+                                    isSelected: selectedTab == 1
+                                ) { selectedTab = 1 }
+                            }
+                            .padding(4)
+                            .background(Color(.systemGray5))
+                            .cornerRadius(14)
+                            .padding(.horizontal)
+                            .padding(.top, 16)
+                            .padding(.bottom, 16)
 
-                ScrollView {
-                    LazyVStack(spacing: 14) {
-                        if selectedTab == 0 {
-                            appointmentList(
-                                upcomingAppointments,
-                                emptyIcon: "calendar.badge.clock",
-                                emptyMessage: "No upcoming appointments",
-                                emptySubtitle: "Book an appointment with a doctor"
-                            )
-                        } else {
-                            appointmentList(
-                                previousAppointments,
-                                emptyIcon: "clock.arrow.circlepath",
-                                emptyMessage: "No previous appointments",
-                                emptySubtitle: "Your completed appointments will appear here"
-                            )
+                            LazyVStack(spacing: 14) {
+                                if selectedTab == 0 {
+                                    appointmentList(
+                                        upcomingAppointments,
+                                        emptyIcon: "calendar.badge.clock",
+                                        emptyMessage: "No upcoming appointments",
+                                        emptySubtitle: "Book an appointment with a doctor"
+                                    )
+                                } else {
+                                    appointmentList(
+                                        previousAppointments,
+                                        emptyIcon: "clock.arrow.circlepath",
+                                        emptyMessage: "No previous appointments",
+                                        emptySubtitle: "Your completed appointments will appear here"
+                                    )
+                                }
+                            }
+                            .padding(.horizontal)
+                            .padding(.bottom, 24)
                         }
                     }
-                    .padding(.horizontal)
-                    .padding(.bottom, 24)
                 }
             }
-            .background(Color(.systemGray6))
             .navigationTitle("My Appointments")
         }
     }
