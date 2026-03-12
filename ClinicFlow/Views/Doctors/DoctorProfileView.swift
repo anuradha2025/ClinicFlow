@@ -18,14 +18,7 @@ struct DoctorProfileView: View {
 
                 // Header Card
                 VStack(spacing: 12) {
-                    Circle()
-                        .fill(Color.cfPrimaryLight)
-                        .frame(width: 90, height: 90)
-                        .overlay(
-                            Image(systemName: "person.fill")
-                                .font(.system(size: 40))
-                                .foregroundColor(.cfPrimary)
-                        )
+                    DoctorAvatarView(imageName: doctor.imageName, size: 90)
 
                     Text(doctor.name)
                         .font(.title2.bold())
