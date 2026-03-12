@@ -35,6 +35,7 @@ struct ContentView: View {
             } else {
                 TabView(selection: $appState.selectedTab) {
                     HomeView()
+                        .environmentObject(nav)
                         .tabItem { Label("Home", systemImage: "house.fill") }
                         .tag(0)
 
@@ -50,6 +51,9 @@ struct ContentView: View {
                         .environmentObject(nav)
                         .tabItem { Label("Laboratory", systemImage: "cross.case.fill") }
                         .tag(4)
+                    ProfileView()
+                            .tabItem { Label("Profile", systemImage: "person.fill") }
+                            .tag(5)
                 }
                 .tint(.cfBlue)
                 .transition(.move(edge: .leading))

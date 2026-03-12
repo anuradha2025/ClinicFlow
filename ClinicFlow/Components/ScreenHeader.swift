@@ -48,22 +48,32 @@ struct ScreenHeader: View {
             if showBell {
                 Button { showNotifications = true } label: {
                     ZStack(alignment: .topTrailing) {
-                        Image(systemName: "bell.fill")
-                            .font(.system(size: 18))
-                            .foregroundColor(.cfTextPrimary)
-                        // Unread badge
+                        // White circle background
                         Circle()
-                            .fill(Color.cfDanger)
-                            .frame(width: 9, height: 9)
-                            .offset(x: 3, y: -2)
+                            .fill(Color.white)
+                            .frame(width: 44, height: 44)
+                            .shadow(color: Color.black.opacity(0.08), radius: 6, x: 0, y: 2)
+
+                        // Bell icon
+                        Image(systemName: "bell")
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundColor(.cfTextPrimary)
+                            .frame(width: 44, height: 44)
+
+                        // Red badge with count
+                        ZStack {
+                            Circle()
+                                .fill(Color.cfDanger)
+                                .frame(width: 18, height: 18)
+                            Text("3")
+                                .font(.system(size: 10, weight: .bold))
+                                .foregroundColor(.white)
+                        }
+                        .offset(x: 2, y: -2)
                     }
                 }
-                .frame(width: 44, height: 44)
-                .accessibilityLabel("Notifications")
                 .sheet(isPresented: $showNotifications) {
                     NotificationsView(isPresented: $showNotifications)
-                        .presentationDetents([.medium, .large])
-                        .presentationDragIndicator(.visible)
                 }
             } else {
                 Spacer().frame(width: 44)
