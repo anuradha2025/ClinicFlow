@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @EnvironmentObject var appState: AppState
+    @Environment(\.dismiss) var dismiss
     @State private var showNotifications = false
     @State private var navigationKey = 0
 
@@ -22,11 +23,30 @@ struct ProfileView: View {
                 Color.cfBg.ignoresSafeArea()
 
                 VStack(spacing: 0) {
+
+                    // Top Bar
                     HStack {
-                        Text("My Profile")
-                            .font(.system(size: 34, weight: .bold))
-                            .foregroundColor(.cfTextPrimary)
+                        Button {
+                            dismiss()
+                        } label: {
+                            ZStack {
+                                Circle()
+                                    .fill(Color.cfBlue.opacity(0.10))
+                                    .frame(width: 38, height: 38)
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundColor(.cfBlue)
+                            }
+                        }
+
                         Spacer()
+
+                        Text("My Profile")
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(.cfTextPrimary)
+
+                        Spacer()
+
                         NotificationBellButton(unreadCount: unreadCount) {
                             showNotifications = true
                         }
@@ -54,8 +74,6 @@ struct ProfileView: View {
                                 Text("sarah.johnson@email.com")
                                     .font(.system(size: 14))
                                     .foregroundColor(.cfTextSecondary)
-
-                                TagPill(text: "Premium Member", color: .cfBlue, filled: true)
                             }
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 24)
@@ -116,12 +134,11 @@ struct ProfileView: View {
                     }
                 }
             }
+            .navigationBarHidden(true)
         }
         .id(navigationKey)
         .onChange(of: appState.popToRoot) { shouldPop in
-            if shouldPop {
-                navigationKey += 1
-            }
+            if shouldPop { navigationKey += 1 }
         }
         .sheet(isPresented: $showNotifications) {
             NotificationsView(isPresented: $showNotifications)

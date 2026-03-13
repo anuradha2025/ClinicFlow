@@ -29,6 +29,8 @@ struct ContentView: View {
                 PharmacyTabRoot()
                     .tabItem { Label("Pharmacy", systemImage: "pills.fill") }
                     .tag(4)
+                
+               
             }
             .tint(.cfBlue)
 
