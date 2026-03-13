@@ -10,6 +10,11 @@ import SwiftUI
 struct MyAppointmentsView: View {
     @State private var selectedTab = 0
     private let allAppointments = MockDataService.shared.appointments
+    @State private var showNotifications = false
+
+    private var unreadCount: Int {
+        SampleNotifications.all.filter { !$0.isRead }.count
+    }
 
     var upcomingAppointments: [Appointment] {
         allAppointments
@@ -29,6 +34,18 @@ struct MyAppointmentsView: View {
                 Color.cfBg.ignoresSafeArea()
 
                 VStack(spacing: 0) {
+                    HStack {
+                        Text("My Appointments")
+                            .font(.system(size: 34, weight: .bold))
+                            .foregroundColor(.cfTextPrimary)
+                        Spacer()
+                        NotificationBellButton(unreadCount: unreadCount) {
+                            showNotifications = true
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
+
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 0) {
                             // Apple-style Segmented Picker
@@ -75,7 +92,11 @@ struct MyAppointmentsView: View {
                     }
                 }
             }
-            .navigationTitle("My Appointments")
+        }
+        .sheet(isPresented: $showNotifications) {
+            NotificationsView(isPresented: $showNotifications)
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
         }
     }
 

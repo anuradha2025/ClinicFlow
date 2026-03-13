@@ -12,6 +12,11 @@ struct LaboratoryView: View {
     @State private var searchText  = ""
     @State private var selectedCat = "All"
     @State private var pageTab     = 0
+    @State private var showNotifications = false
+
+    private var unreadCount: Int {
+        SampleNotifications.all.filter { !$0.isRead }.count
+    }
 
     let categories = ["All", "Diabetes", "Haematology", "Cardiology",
                       "Endocrinology", "Gastroenterology", "Urology"]
@@ -32,6 +37,18 @@ struct LaboratoryView: View {
                 Color.cfBg.ignoresSafeArea()
 
                 VStack(spacing: 0) {
+                    HStack {
+                        Text("Laboratory")
+                            .font(.system(size: 34, weight: .bold))
+                            .foregroundColor(.cfTextPrimary)
+                        Spacer()
+                        NotificationBellButton(unreadCount: unreadCount) {
+                            showNotifications = true
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
+
                     if pageTab == 0 {
                         // Matches Doctors/Appointments style: content scrolls under the nav bar title
                         ScrollView(.vertical, showsIndicators: false) {
@@ -49,7 +66,6 @@ struct LaboratoryView: View {
                     }
                 }
             }
-            .navigationTitle("Laboratory")
         }
         .onAppear {
             if nav.showReportsTab {
@@ -62,6 +78,11 @@ struct LaboratoryView: View {
                 pageTab = 1
                 nav.showReportsTab = false
             }
+        }
+        .sheet(isPresented: $showNotifications) {
+            NotificationsView(isPresented: $showNotifications)
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
         }
     }
 

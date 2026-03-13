@@ -12,6 +12,11 @@ struct FindDoctorView: View {
     @EnvironmentObject var appState: AppState
     @State private var path = NavigationPath()
     @State private var navigationKey = 0
+    @State private var showNotifications = false
+
+    private var unreadCount: Int {
+        SampleNotifications.all.filter { !$0.isRead }.count
+    }
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -20,6 +25,18 @@ struct FindDoctorView: View {
                 Color.cfBg.ignoresSafeArea()
 
                 VStack(spacing: 0) {
+                    HStack {
+                        Text("Find a Doctor")
+                            .font(.system(size: 34, weight: .bold))
+                            .foregroundColor(.cfTextPrimary)
+                        Spacer()
+                        NotificationBellButton(unreadCount: unreadCount) {
+                            showNotifications = true
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
+
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 0) {
                             // Search Bar
@@ -51,7 +68,6 @@ struct FindDoctorView: View {
                     }
                 }
             }
-            .navigationTitle("Find a Doctor")
         }
         .id(navigationKey)
         .onAppear { vm.loadDoctors() }
@@ -60,6 +76,11 @@ struct FindDoctorView: View {
                 navigationKey += 1  // rotates the NavigationStack's id, clearing all pushed views
                 appState.popToRoot = false
             }
+        }
+        .sheet(isPresented: $showNotifications) {
+            NotificationsView(isPresented: $showNotifications)
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
         }
     }
 }
