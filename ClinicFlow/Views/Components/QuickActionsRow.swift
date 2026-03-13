@@ -34,7 +34,7 @@ struct QuickActionsRow: View {
       
             // Laboratory → switches to Laboratory tab
     Button {
-        appState.selectedTab = 4
+        appState.selectedTab = 3
     } label: {
         QuickActionItem(title: "Laboratory",
                         icon: "cross.case.fill",

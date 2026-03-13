@@ -27,41 +27,29 @@ struct LaboratoryView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .top) {
-            Color.cfBg.ignoresSafeArea()
+        NavigationStack {
+            ZStack(alignment: .top) {
+                Color.cfBg.ignoresSafeArea()
 
-            VStack(spacing: 0) {
-
-                ScreenHeader(title: "Laboratory")
-
-                HStack(spacing: 4) {
-                    PillTab(
-                        title: "Available Tests",
-                        count: filtered.count,
-                        isSelected: pageTab == 0
-                    ) { withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) { pageTab = 0 } }
-
-                    PillTab(
-                        title: "My Reports",
-                        count: sampleReports.count,
-                        isSelected: pageTab == 1
-                    ) { withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) { pageTab = 1 } }
-                }
-                .padding(4)
-                .background(Color(red: 0.91, green: 0.91, blue: 0.93))
-                .cornerRadius(14)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-                .background(Color.cfCard)
-
-                if pageTab == 0 {
-                    availableTestsView
+                VStack(spacing: 0) {
+                    if pageTab == 0 {
+                        // Matches Doctors/Appointments style: content scrolls under the nav bar title
+                        ScrollView(.vertical, showsIndicators: false) {
+                            VStack(spacing: 0) {
+                                tabSwitcher
+                                availableTestsContent
+                            }
+                        }
                         .transition(.opacity)
-                } else {
-                    MyReportsView()
-                        .transition(.opacity)
+                    } else {
+                        // Reports list with same top segmented control
+                        tabSwitcher
+                        MyReportsView()
+                            .transition(.opacity)
+                    }
                 }
             }
+            .navigationTitle("Laboratory")
         }
         .onAppear {
             if nav.showReportsTab {
@@ -77,9 +65,38 @@ struct LaboratoryView: View {
         }
     }
 
-    var availableTestsView: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack(spacing: 0) {
+    private var tabSwitcher: some View {
+        HStack(spacing: 4) {
+            PillTab(
+                title: "Available Tests",
+                count: filtered.count,
+                isSelected: pageTab == 0
+            ) {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    pageTab = 0
+                }
+            }
+
+            PillTab(
+                title: "My Reports",
+                count: sampleReports.count,
+                isSelected: pageTab == 1
+            ) {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    pageTab = 1
+                }
+            }
+        }
+        .padding(4)
+        .background(Color(red: 0.91, green: 0.91, blue: 0.93))
+        .cornerRadius(14)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(Color.cfCard)
+    }
+
+    var availableTestsContent: some View {
+        VStack(spacing: 0) {
 
                 CFSearchBar(text: $searchText, placeholder: "Search tests, categories...")
                     .padding(.horizontal, 16)
@@ -120,7 +137,6 @@ struct LaboratoryView: View {
                 .padding(.horizontal, 16)
                 .padding(.bottom, 30)
             }
-        }
     }
 }
 
