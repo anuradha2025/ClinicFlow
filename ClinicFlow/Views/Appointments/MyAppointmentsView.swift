@@ -45,6 +45,7 @@ struct MyAppointmentsView: View {
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, 8)
+                    .padding(.bottom, 12)
 
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 0) {

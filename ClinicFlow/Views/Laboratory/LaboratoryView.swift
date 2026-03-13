@@ -48,6 +48,7 @@ struct LaboratoryView: View {
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, 8)
+                    .padding(.bottom, 12)
 
                     if pageTab == 0 {
                         // Matches Doctors/Appointments style: content scrolls under the nav bar title
