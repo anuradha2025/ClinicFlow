@@ -19,6 +19,7 @@ struct TestListCard: View {
         case "Cardiology":     return Color(red: 0.95, green: 0.35, blue: 0.35)
         case "Endocrinology":  return .cfPurple
         case "Gastroenterology": return .cfWarning
+        case "Urology": return Color(red: 0.96, green: 0.65, blue: 0.14)
         default:               return .cfBlue
         }
     }

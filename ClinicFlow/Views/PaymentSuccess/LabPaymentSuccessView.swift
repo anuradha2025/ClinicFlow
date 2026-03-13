@@ -12,14 +12,15 @@ struct LabPaymentSuccessView: View {
     @EnvironmentObject var nav: AppNavigation
     @EnvironmentObject var appState: AppState
 
-    @State private var checkScale: CGFloat  = 0.4
-    @State private var checkOpacity: Double = 0
-    @State private var ringScale: CGFloat   = 0.6
+    @State private var checkScale: CGFloat   = 0.4
+    @State private var checkOpacity: Double  = 0
+    @State private var ringScale: CGFloat    = 0.6
     @State private var contentOffset: CGFloat = 40
-    @State private var contentOpacity: Double  = 0
+    @State private var contentOpacity: Double = 0
 
     var formattedDate: String {
-        let f = DateFormatter(); f.dateFormat = "EEEE, d MMMM yyyy"
+        let f = DateFormatter()
+        f.dateFormat = "EEEE, d MMMM yyyy"
         return f.string(from: nav.bookedDate)
     }
 
@@ -36,7 +37,6 @@ struct LabPaymentSuccessView: View {
                         // Success Animation
                         VStack(spacing: 14) {
                             ZStack {
-                                // Outer ring
                                 Circle()
                                     .fill(Color.cfSuccess.opacity(0.08))
                                     .frame(width: 130, height: 130)
@@ -70,13 +70,12 @@ struct LabPaymentSuccessView: View {
                         // Booking Detail Card
                         CFCard(padding: 0) {
                             VStack(spacing: 0) {
-                                // Card header
                                 HStack {
                                     Text("Appointment Details")
                                         .font(.system(size: 14, weight: .bold))
                                         .foregroundColor(.cfTextPrimary)
                                     Spacer()
-                                    TagPill(text: "✓ Confirmed", color: .cfSuccess, filled: true)
+                                    TagPill(text: "Confirmed", color: .cfSuccess, filled: true)
                                 }
                                 .padding(16)
 
@@ -135,7 +134,7 @@ struct LabPaymentSuccessView: View {
                 CFDivider()
                 PrimaryButton(title: "View My Reports", icon: "doc.text.fill") {
                     nav.exitLabFlow()
-                    appState.selectedTab = 3  // Reports tab
+                    appState.selectedTab = 3  // Laboratory tab (replaces Reports)
                 }
                 SecondaryButton(title: "Back to Laboratory", icon: "cross.case.fill") {
                     nav.reset()
@@ -161,4 +160,3 @@ struct LabPaymentSuccessView: View {
         }
     }
 }
-

@@ -11,16 +11,24 @@ struct LabPaymentView: View {
     let test: LabTest
     @EnvironmentObject var nav: AppNavigation
 
-    @State private var cardType       = 0   // 0=VISA 1=MC
+    @State private var cardType       = 0
     @State private var cardholderName = ""
     @State private var cardNumber     = ""
     @State private var expMonth       = "01"
     @State private var expYear        = "2027"
     @State private var cvc            = ""
     @State private var isProcessing   = false
+    @State private var errorMessage   = ""
+    @State private var showError      = false
 
     let months = (1...12).map { String(format: "%02d", $0) }
     let years  = (2025...2032).map { "\($0)" }
+
+    var isFormValid: Bool {
+        !cardholderName.trimmingCharacters(in: .whitespaces).isEmpty &&
+        cardNumber.filter({ $0.isNumber }).count == 16 &&
+        cvc.count >= 3
+    }
 
     var maskedNumber: String {
         let digits = cardNumber.filter { $0.isNumber }
@@ -140,6 +148,20 @@ struct LabPaymentView: View {
                                             text: $cardNumber,
                                             keyboard: .numberPad)
 
+                                // Card number validation hint
+                                if !cardNumber.isEmpty &&
+                                    cardNumber.filter({ $0.isNumber }).count < 16 {
+                                    HStack(spacing: 6) {
+                                        Image(systemName: "exclamationmark.circle.fill")
+                                            .font(.system(size: 12))
+                                            .foregroundColor(.cfDanger)
+                                        Text("\(cardNumber.filter({ $0.isNumber }).count)/16 digits entered")
+                                            .font(.system(size: 11))
+                                            .foregroundColor(.cfDanger)
+                                    }
+                                    .padding(.leading, 4)
+                                }
+
                                 HStack(spacing: 12) {
                                     VStack(alignment: .leading, spacing: 6) {
                                         Text("Exp Month")
@@ -182,7 +204,7 @@ struct LabPaymentView: View {
                         // Order Summary
                         CFCard {
                             VStack(spacing: 10) {
-                                SummaryRow(label: "Test Fee", value: "Rs. \(test.price)")
+                                SummaryRow(label: "Test Fee",    value: "Rs. \(test.price)")
                                 SummaryRow(label: "Booking Fee", value: "Free")
                                 CFDivider()
                                 HStack {
@@ -208,9 +230,29 @@ struct LabPaymentView: View {
             VStack(spacing: 0) {
                 CFDivider()
                 PrimaryButton(
-                    title: isProcessing ? "Processing…" : "Pay Rs. \(test.price)/=",
-                    icon: isProcessing ? nil : "lock.shield.fill"
+                    title: isProcessing ? "Processing..." : "Pay Rs. \(test.price)/=",
+                    icon: isProcessing ? nil : "lock.shield.fill",
+                    color: isFormValid ? .cfBlue : .cfTextTertiary
                 ) {
+                    guard !isProcessing else { return }
+
+                    // Validation
+                    guard !cardholderName.trimmingCharacters(in: .whitespaces).isEmpty else {
+                        errorMessage = "Please enter cardholder name"
+                        showError = true
+                        return
+                    }
+                    guard cardNumber.filter({ $0.isNumber }).count == 16 else {
+                        errorMessage = "Please enter a valid 16-digit card number"
+                        showError = true
+                        return
+                    }
+                    guard cvc.count >= 3 else {
+                        errorMessage = "Please enter a valid CVC (3 digits)"
+                        showError = true
+                        return
+                    }
+
                     isProcessing = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                         isProcessing = false
@@ -223,6 +265,10 @@ struct LabPaymentView: View {
             }
         }
         .navigationBarHidden(true)
+        .alert("Invalid Details", isPresented: $showError) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(errorMessage)
+        }
     }
 }
-

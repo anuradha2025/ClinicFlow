@@ -9,10 +9,12 @@ import SwiftUI
 
 struct LaboratoryView: View {
     @EnvironmentObject var nav: AppNavigation
-    @State private var searchText    = ""
-    @State private var selectedCat   = "All"
+    @State private var searchText  = ""
+    @State private var selectedCat = "All"
+    @State private var pageTab     = 0
 
-    let categories = ["All", "Diabetes", "Haematology", "Cardiology", "Endocrinology", "Gastroenterology"]
+    let categories = ["All", "Diabetes", "Haematology", "Cardiology",
+                      "Endocrinology", "Gastroenterology", "Urology"]
 
     var filtered: [LabTest] {
         sampleTests.filter { test in
@@ -25,64 +27,129 @@ struct LaboratoryView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            ZStack(alignment: .top) {
-                Color.cfBg.ignoresSafeArea()
+        ZStack(alignment: .top) {
+            Color.cfBg.ignoresSafeArea()
 
-                VStack(spacing: 0) {
-                    ScrollView(.vertical, showsIndicators: false) {
-                        VStack(spacing: 0) {
+            VStack(spacing: 0) {
 
-                            // Search
-                            CFSearchBar(text: $searchText, placeholder: "Search tests, categories…")
-                                .padding(.horizontal, 16)
-                                .padding(.top, 16)
+                ScreenHeader(title: "Laboratory")
 
-                            // Category Filter
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 8) {
-                                    ForEach(categories, id: \.self) { cat in
-                                        CategoryChip(label: cat, isSelected: selectedCat == cat) {
-                                            withAnimation(.easeInOut(duration: 0.2)) {
-                                                selectedCat = cat
-                                            }
-                                        }
-                                    }
-                                }
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 14)
-                            }
+                HStack(spacing: 4) {
+                    PillTab(
+                        title: "Available Tests",
+                        count: filtered.count,
+                        isSelected: pageTab == 0
+                    ) { withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) { pageTab = 0 } }
 
-                            // Results count
-                            HStack {
-                                Text("\(filtered.count) test\(filtered.count == 1 ? "" : "s") available")
-                                    .font(.system(size: 13))
-                                    .foregroundColor(.cfTextSecondary)
-                                Spacer()
-                            }
-                            .padding(.horizontal, 16)
-                            .padding(.bottom, 10)
+                    PillTab(
+                        title: "My Reports",
+                        count: sampleReports.count,
+                        isSelected: pageTab == 1
+                    ) { withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) { pageTab = 1 } }
+                }
+                .padding(4)
+                .background(Color(red: 0.91, green: 0.91, blue: 0.93))
+                .cornerRadius(14)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+                .background(Color.cfCard)
 
-                            // Test List
-                            LazyVStack(spacing: 12) {
-                                ForEach(filtered) { test in
-                                    TestListCard(test: test) {
-                                        nav.selectedTest = test
-                                    }
-                                }
-
-                                if filtered.isEmpty {
-                    EmptyStateView(message: "No tests found for: " + searchText)
-                                        .padding(.top, 40)
-                                }
-                            }
-                            .padding(.horizontal, 16)
-                            .padding(.bottom, 30)
-                        }
-                    }
+                if pageTab == 0 {
+                    availableTestsView
+                        .transition(.opacity)
+                } else {
+                    MyReportsView()
+                        .transition(.opacity)
                 }
             }
-            .navigationTitle("Laboratory")
+        }
+        .onAppear {
+            if nav.showReportsTab {
+                pageTab = 1
+                nav.showReportsTab = false
+            }
+        }
+        .onChange(of: nav.showReportsTab) { value in
+            if value {
+                pageTab = 1
+                nav.showReportsTab = false
+            }
+        }
+    }
+
+    var availableTestsView: some View {
+        ScrollView(.vertical, showsIndicators: false) {
+            VStack(spacing: 0) {
+
+                CFSearchBar(text: $searchText, placeholder: "Search tests, categories...")
+                    .padding(.horizontal, 16)
+                    .padding(.top, 16)
+
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(categories, id: \.self) { cat in
+                            CategoryChip(label: cat, isSelected: selectedCat == cat) {
+                                withAnimation(.easeInOut(duration: 0.2)) { selectedCat = cat }
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 14)
+                }
+
+                HStack {
+                    Text("\(filtered.count) test\(filtered.count == 1 ? "" : "s") available")
+                        .font(.system(size: 13))
+                        .foregroundColor(.cfTextSecondary)
+                    Spacer()
+                }
+                .padding(.horizontal, 16)
+                .padding(.bottom, 10)
+
+                LazyVStack(spacing: 12) {
+                    ForEach(filtered) { test in
+                        TestListCard(test: test) {
+                            nav.selectedTest = test
+                        }
+                    }
+                    if filtered.isEmpty {
+                        EmptyStateView(message: "No tests found for: " + searchText)
+                            .padding(.top, 40)
+                    }
+                }
+                .padding(.horizontal, 16)
+                .padding(.bottom, 30)
+            }
+        }
+    }
+}
+
+// MARK: - Pill Tab
+struct PillTab: View {
+    let title:      String
+    let count:      Int
+    let isSelected: Bool
+    let onTap:      () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            HStack(spacing: 6) {
+                Text(title)
+                    .font(.system(size: 14, weight: isSelected ? .semibold : .medium))
+                    .foregroundColor(isSelected ? .cfTextPrimary : .cfTextSecondary)
+                Text("\(count)")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(isSelected ? .white : .cfTextSecondary)
+                    .frame(width: 22, height: 22)
+                    .background(isSelected ? Color.cfBlue : Color(red: 0.80, green: 0.80, blue: 0.82))
+                    .clipShape(Circle())
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background(isSelected ? Color.white : Color.clear)
+            .cornerRadius(11)
+            .shadow(color: isSelected ? Color.black.opacity(0.10) : .clear,
+                    radius: 4, x: 0, y: 2)
         }
     }
 }
@@ -107,7 +174,6 @@ struct CategoryChip: View {
         }
     }
 }
-
 
 // MARK: - Empty State
 struct EmptyStateView: View {

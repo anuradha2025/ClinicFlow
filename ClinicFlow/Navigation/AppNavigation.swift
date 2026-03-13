@@ -14,6 +14,7 @@ class AppNavigation: ObservableObject {
     @Published var showBooking:  Bool     = false
     @Published var showPayment:  Bool     = false
     @Published var showSuccess:  Bool     = false
+    @Published var showReportsTab: Bool = false
     @Published var bookedDate:   Date     = Date()
     @Published var bookedTime:   String   = "08:00 AM"
     @Published var selectedTab:  Int      = 0
