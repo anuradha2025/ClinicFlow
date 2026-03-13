@@ -81,27 +81,7 @@ struct PharmacyView: View {
                     .padding(.vertical, 12)
                     .background(Color.white)
 
-                        // MARK: Checkout
-                        NavigationLink(destination: ProceedPharmacyView(pharmVM: pharmVM, appointment: nil)) {
-                            HStack(spacing: 12) {
-                                Image(systemName: "cart.badge.plus")
-                                    .font(.system(size: 18))
-                                    .foregroundColor(.blue)
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text("Proceed to Checkout")
-                                        .font(.system(size: 15, weight: .semibold, design: .rounded))
-                                    Text("View doctor medicine summary & pay")
-                                        .font(.system(size: 12, design: .rounded))
-                                        .foregroundColor(.secondary)
-                                }
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .foregroundColor(.blue)
-                            }
-                            .padding(14)
-                            .background(Color.white)
-                            .cornerRadius(16)
-                        }
+                       
 
                         // MARK: Categories
                         VStack(alignment: .leading) {
