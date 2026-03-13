@@ -49,7 +49,7 @@ struct AppointmentLaboratoryReferralView: View {
 
                 PrimaryButton(title: "Open Laboratory", icon: "cross.case.fill") {
                     nav.exitLabFlow()
-                    appState.selectedTab = 4
+                    appState.selectedTab = 3
                 }
 
                 Text("Select a required test above to continue with booking.")

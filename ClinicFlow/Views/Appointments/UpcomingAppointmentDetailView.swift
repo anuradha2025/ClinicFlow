@@ -109,7 +109,9 @@ struct UpcomingAppointmentDetailView: View {
                                         .foregroundColor(.cfTextSecondary)
                                         .padding(.leading, 8)
                                     Spacer()
-                                    QueueStatusPill(status: entry.status)
+                                    if isToday || (entry.status != .finished && entry.status != .checkedIn) {
+                                        QueueStatusPill(status: entry.status)
+                                    }
                                 }
                                 .padding(.horizontal, 16)
                                 .padding(.vertical, 14)

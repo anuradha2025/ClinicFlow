@@ -24,13 +24,14 @@ struct QueueEntry: Identifiable, Codable {
 }
 
 enum QueueEntryStatus: String, Codable {
-    case finished, checkedIn, cancelled, ongoing, you
+    case finished, checkedIn, cancelled, notAvailable, ongoing, you
 
     var label: String {
         switch self {
         case .finished:  return "Finished"
         case .checkedIn: return "Checked In"
         case .cancelled: return "Cancelled"
+        case .notAvailable: return "Not Available"
         case .ongoing:   return "On Going"
         case .you:       return "You"
         }
@@ -41,6 +42,7 @@ enum QueueEntryStatus: String, Codable {
         case .finished:  return .cfTextSecondary
         case .checkedIn: return .cfSuccess
         case .cancelled: return .cfDanger
+        case .notAvailable: return .cfTextSecondary
         case .ongoing:   return .cfPrimary
         case .you:       return .cfWarning
         }
