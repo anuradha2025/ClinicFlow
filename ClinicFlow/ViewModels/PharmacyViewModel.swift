@@ -20,6 +20,10 @@ class PharmacyViewModel: ObservableObject {
 
     @Published var orderPlaced: Bool = false
 
+    // Prescription tracking
+    @Published var prescriptionTotal: Double = 0
+    @Published var prescriptionQueueStatus: String = "Pending"
+
     var filteredProducts: [Product] {
         var list = products
         if selectedCategory != "All" {
@@ -99,6 +103,15 @@ class PharmacyViewModel: ObservableObject {
     func placeOrder() {
         orderPlaced = true
         cartItems = []
+    }
+
+    func setPrescription(total: Double) {
+        prescriptionTotal = total
+        prescriptionQueueStatus = "Preparing"
+        // simulate queue status change to ready after delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.prescriptionQueueStatus = "Ready for pickup"
+        }
     }
 
     func addCard(_ card: SavedCard) {

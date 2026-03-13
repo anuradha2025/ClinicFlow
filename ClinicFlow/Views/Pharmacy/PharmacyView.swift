@@ -73,57 +73,27 @@ struct PharmacyView: View {
                     .padding(.vertical, 12)
                     .background(Color.white)
 
-                    // MARK: Featured Slider (iOS-style)
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Today’s picks")
-                            .font(.system(size: 18, weight: .bold, design: .rounded))
-                            .padding(.horizontal, 24)
-
-                        TabView {
-                            ForEach(pharmVM.suggestedProducts) { product in
-                                NavigationLink(
-                                    destination: ProductDetailView(
-                                        product: product,
-                                        pharmVM: pharmVM
-                                    )
-                                ) {
-                                    FeaturedProductCard(product: product)
-                                        .padding(.horizontal, 24)
+                        // MARK: Checkout
+                        NavigationLink(destination: ProceedPharmacyView(pharmVM: pharmVM)) {
+                            HStack(spacing: 12) {
+                                Image(systemName: "cart.badge.plus")
+                                    .font(.system(size: 18))
+                                    .foregroundColor(.blue)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("Proceed to Checkout")
+                                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                    Text("View doctor medicine summary & pay")
+                                        .font(.system(size: 12, design: .rounded))
+                                        .foregroundColor(.secondary)
                                 }
-                            }
-                        }
-                        .frame(height: 190)
-                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-                    }
-                    .padding(.bottom, 8)
-
-                    VStack(spacing: 16) {
-
-                        // MARK: Prescription Section
-                        HStack(spacing: 12) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.blue.opacity(0.08))
-                                    .frame(width: 40, height: 40)
-                                Image(systemName: "doc.text.fill")
+                                Spacer()
+                                Image(systemName: "chevron.right")
                                     .foregroundColor(.blue)
                             }
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("Order Via Prescription")
-                                    .font(.system(size: 13, weight: .semibold, design: .rounded))
-                                Text("Upload or scan your doctor’s prescription.")
-                                    .font(.system(size: 11, design: .rounded))
-                                    .foregroundColor(.secondary)
-                                    .lineLimit(2)
-                            }
-                            Spacer()
-                            Image(systemName: "arrow.down.circle.fill")
-                                .font(.system(size: 22))
-                                .foregroundColor(.blue)
+                            .padding(14)
+                            .background(Color.white)
+                            .cornerRadius(16)
                         }
-                        .padding(14)
-                        .background(Color.white)
-                        .cornerRadius(16)
 
                         // MARK: Categories
                         VStack(alignment: .leading) {
@@ -156,10 +126,6 @@ struct PharmacyView: View {
                                                         .foregroundColor(
                                                             pharmVM.selectedCategory == cat ? .blue : .secondary
                                                         )
-                                                }
-                                                Text(cat)
-                                                    .font(.system(size: 12))
-                                                    .foregroundColor(.gray)
                                                     .frame(width: 70)
                                                     .multilineTextAlignment(.center)
                                             }
