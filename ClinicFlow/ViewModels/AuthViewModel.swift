@@ -14,11 +14,12 @@ class AuthViewModel: ObservableObject {
     
 
     private var registeredUsers: [String: (password: String, user: User)] = [:]
+    private let shouldRestoreSessionOnLaunch = false
     
     private let authService = AuthService.shared
     
     init() {
-        if let user = authService.loadSession() {
+        if shouldRestoreSessionOnLaunch, let user = authService.loadSession() {
             self.currentUser = user
             self.isLoggedIn = true
         }
