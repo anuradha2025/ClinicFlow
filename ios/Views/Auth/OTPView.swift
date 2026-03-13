@@ -10,7 +10,7 @@ struct OTPView: View {
     @State private var canResend: Bool = false
     @State private var shakeOffset: CGFloat = 0
     @State private var timer: Timer?
-    @State private var navigateToLogin: Bool = false
+    @State private var navigateToAppointment: Bool = false
     
     var otpCode: String { otpDigits.joined() }
     var isComplete: Bool { otpDigits.allSatisfy { $0.count == 1 } }
@@ -22,7 +22,6 @@ struct OTPView: View {
             VStack(spacing: 0) {
                 Spacer()
                 
-             
                 IconCircle(systemName: "message.badge.filled.fill", iconSize: 34)
                 Spacer().frame(height: 32)
                 
@@ -41,11 +40,8 @@ struct OTPView: View {
                 }
                 .multilineTextAlignment(.center)
                 
-               
-                
                 Spacer().frame(height: 40)
                 
-
                 HStack(spacing: 12) {
                     ForEach(0..<6, id: \.self) { i in
                         OTPBox(
@@ -70,11 +66,6 @@ struct OTPView: View {
                 
                 Spacer().frame(height: 16)
                 
-                
-                
-                Spacer().frame(height: 20)
-                
-
                 if authVM.showError {
                     HStack(spacing: 6) {
                         Image(systemName: "exclamationmark.triangle.fill")
@@ -86,7 +77,6 @@ struct OTPView: View {
                     Spacer().frame(height: 8)
                 }
                 
-
                 if !canResend {
                     HStack(spacing: 6) {
                         Image(systemName: "clock")
@@ -110,7 +100,6 @@ struct OTPView: View {
                 
                 Spacer().frame(height: 40)
                 
-   
                 PrimaryButton(
                     label: authVM.otpVerified ? "Verified ✓" : "Verify Code",
                     icon: authVM.otpVerified ? "checkmark.circle.fill" : "shield.checkered",
@@ -123,13 +112,13 @@ struct OTPView: View {
                 Spacer()
             }
         }
-        .navigationDestination(isPresented: $navigateToLogin) {
-            LoginView()
+        .navigationDestination(isPresented: $navigateToAppointment) {
+            AppointmentView()
         }
         .onChange(of: authVM.otpVerified) { _, verified in
             if verified {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                    navigateToLogin = true
+                    navigateToAppointment = true
                 }
             }
         }
@@ -142,16 +131,6 @@ struct OTPView: View {
         }
         .onDisappear { timer?.invalidate() }
         .navigationBarTitleDisplayMode(.inline)
-    }
-    
-
-    
-    func autoFill() {
-        let code = "123456"
-        for i in 0..<6 {
-            otpDigits[i] = String(code[code.index(code.startIndex, offsetBy: i)])
-        }
-        focusedIndex = nil
     }
     
     func handleInput(_ value: String, at index: Int) {
@@ -204,7 +183,6 @@ struct OTPView: View {
     }
 }
 
-
 struct OTPBox: View {
     let digit: String
     let isFocused: Bool
@@ -236,7 +214,6 @@ struct OTPBox: View {
                     .foregroundColor(.white)
             }
             
-        
             if isFocused && digit.isEmpty {
                 Rectangle()
                     .fill(Color.white.opacity(0.8))

@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import AuthenticationServices
 
 class AuthViewModel: ObservableObject {
     @Published var currentUser: User?
@@ -124,6 +125,50 @@ class AuthViewModel: ObservableObject {
         errorMessage = ""
     }
     
+    // MARK: - Google Sign In
+    func signInWithGoogle() {
+        isLoading = true
+        // Simulate Google Sign In (replace with real GoogleSignIn SDK later)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.isLoading = false
+            // Create a mock Google user for now
+            let user = User(
+                fullName: "Google User",
+                email: "googleuser@gmail.com",
+                phone: ""
+            )
+            self.currentUser = user
+            self.authService.saveSession(user: user)
+            self.isLoggedIn = true
+        }
+    }
+
+    // MARK: - Apple Sign In
+    func handleAppleSignIn(result: Result<ASAuthorization, Error>) {
+        switch result {
+        case .success(let auth):
+            if let credential = auth.credential as? ASAuthorizationAppleIDCredential {
+                let fullName = [
+                    credential.fullName?.givenName,
+                    credential.fullName?.familyName
+                ].compactMap { $0 }.joined(separator: " ")
+
+                let email = credential.email ?? "apple@privaterelay.appleid.com"
+
+                let user = User(
+                    fullName: fullName.isEmpty ? "Apple User" : fullName,
+                    email: email,
+                    phone: ""
+                )
+                self.currentUser = user
+                self.authService.saveSession(user: user)
+                self.isLoggedIn = true
+            }
+        case .failure(let error):
+            triggerError(error.localizedDescription)
+        }
+    }
 
     private func saveRegisteredUsers() {
         var store: [String: [String: String]] = [:]

@@ -5,7 +5,7 @@ struct PharmacyView: View {
     @Environment(\.dismiss) var dismiss
 
     let categoryIcons = [
-        "Vitamins and minerals": "pills.fill",
+        "Vitamins": "pills.fill",
         "Beauty and care": "sparkles",
         "Medicines": "cross.case.fill",
         "Sport and health": "figure.run"
@@ -18,7 +18,7 @@ struct PharmacyView: View {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 0) {
 
-       
+                    // MARK: Header
                     HStack {
                         Button(action: { dismiss() }) {
                             Image(systemName: "chevron.left")
@@ -29,7 +29,7 @@ struct PharmacyView: View {
                         }
                         Spacer()
                         Text("Pharmacy")
-                            .font(.system(size: 18, weight: .bold, design: .rounded))
+                            .font(.system(size: 34, weight: .bold, design: .rounded))
                         Spacer()
                         NavigationLink(destination: CartView(pharmVM: pharmVM)) {
                             ZStack(alignment: .topTrailing) {
@@ -55,7 +55,7 @@ struct PharmacyView: View {
                     .padding(.bottom, 16)
                     .background(Color.white)
 
-                 
+                    // MARK: Search Bar
                     HStack(spacing: 10) {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(.gray)
@@ -75,45 +75,52 @@ struct PharmacyView: View {
 
                     VStack(spacing: 16) {
 
-                
-                        VStack(alignment: .leading, spacing: 12) {
+                        // MARK: Categories
+                        VStack(alignment: .leading) {
                             HStack {
                                 Text("Categories")
-                                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                    .font(.system(size: 16, weight: .bold, design: .rounded))
                                 Spacer()
-                                Button("Show all") {}
-                                    .font(.system(size: 13, design: .rounded))
+                                Button("See all") {}
+                                    .font(.system(size: 14))
                                     .foregroundColor(.blue)
                             }
-                            HStack(spacing: 16) {
-                                ForEach(Product.categories, id: \.self) { cat in
-                                    Button(action: {
-                                        pharmVM.selectedCategory = pharmVM.selectedCategory == cat ? "All" : cat
-                                    }) {
-                                        VStack(spacing: 6) {
-                                            ZStack {
-                                                Circle()
-                                                    .fill(pharmVM.selectedCategory == cat ? Color.blue.opacity(0.15) : Color(.systemGray5))
-                                                    .frame(width: 52, height: 52)
-                                                Image(systemName: categoryIcons[cat] ?? "pills")
-                                                    .font(.system(size: 20))
-                                                    .foregroundColor(pharmVM.selectedCategory == cat ? .blue : .gray)
+
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 16) {
+                                    ForEach(Product.categories, id: \.self) { cat in
+                                        Button(action: {
+                                            pharmVM.selectedCategory = pharmVM.selectedCategory == cat ? "All" : cat
+                                        }) {
+                                            VStack(spacing: 8) {
+                                                ZStack {
+                                                    Circle()
+                                                        .fill(pharmVM.selectedCategory == cat ? Color.blue.opacity(0.2) : Color(.systemGray5))
+                                                        .frame(width: 60, height: 60)
+                                                    Image(systemName: categoryIcons[cat] ?? "pills")
+                                                        .font(.system(size: 22))
+                                                        .foregroundColor(pharmVM.selectedCategory == cat ? .blue : .gray)
+                                                }
+                                                Text(cat)
+                                                    .font(.system(size: 12))
+                                                    .foregroundColor(.gray)
+                                                    .frame(width: 70)
+                                                    .multilineTextAlignment(.center)
                                             }
-                                            Text(cat)
-                                                .font(.system(size: 10, design: .rounded))
-                                                .foregroundColor(.gray)
-                                                .multilineTextAlignment(.center)
-                                                .frame(width: 60)
+                                            .animation(.spring(), value: pharmVM.selectedCategory)
                                         }
                                     }
                                 }
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 10)
+                                .frame(alignment: .center)
                             }
                         }
                         .padding(16)
                         .background(Color.white)
                         .cornerRadius(16)
 
-          
+                        // MARK: Prescription Section
                         HStack(spacing: 12) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 8)
@@ -125,7 +132,7 @@ struct PharmacyView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text("Order Via Prescription")
                                     .font(.system(size: 13, weight: .semibold, design: .rounded))
-                                Text("Order your medication and upload your prescription easily")
+                                Text("Upload your prescription easily")
                                     .font(.system(size: 11, design: .rounded))
                                     .foregroundColor(.gray)
                                     .lineLimit(2)
@@ -139,16 +146,17 @@ struct PharmacyView: View {
                         .background(Color.white)
                         .cornerRadius(16)
 
-                        // ── Suggested Products ──────────────
+                        // MARK: Suggested Products
                         VStack(alignment: .leading, spacing: 12) {
                             HStack {
                                 Text("Suggest Product")
                                     .font(.system(size: 15, weight: .semibold, design: .rounded))
                                 Spacer()
-                                Button("Show all") {}
-                                    .font(.system(size: 13, design: .rounded))
+                                Button("See all") {}
+                                    .font(.system(size: 13))
                                     .foregroundColor(.blue)
                             }
+
                             LazyVGrid(
                                 columns: [GridItem(.flexible()), GridItem(.flexible())],
                                 spacing: 12
@@ -168,7 +176,6 @@ struct PharmacyView: View {
                         .padding(16)
                         .background(Color.white)
                         .cornerRadius(16)
-
                     }
                     .padding(.horizontal, 20)
                     .padding(.top, 12)
@@ -178,14 +185,13 @@ struct PharmacyView: View {
         }
         .navigationBarHidden(true)
     }
-
 }
 
-
-
+// MARK: Product Card
 struct ProductCard: View {
     let product: Product
     @ObservedObject var pharmVM: PharmacyViewModel
+    @State private var heartScale: CGFloat = 1.0
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -200,10 +206,21 @@ struct ProductCard: View {
                         .frame(width: 60, height: 60)
                         .foregroundColor(.orange)
                 }
-                Button(action: { pharmVM.toggleWishlist(productId: product.id) }) {
+
+                // Heart Button with Animation
+                Button(action: {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
+                        pharmVM.toggleWishlist(productId: product.id)
+                        heartScale = 1.5
+                    }
+                    withAnimation(.spring().delay(0.2)) {
+                        heartScale = 1.0
+                    }
+                }) {
                     Image(systemName: pharmVM.wishlist.contains(product.id) ? "heart.fill" : "heart")
                         .font(.system(size: 14))
                         .foregroundColor(pharmVM.wishlist.contains(product.id) ? .red : .gray)
+                        .scaleEffect(heartScale)
                         .padding(6)
                         .background(Circle().fill(Color.white))
                 }
@@ -244,6 +261,7 @@ struct ProductCard: View {
     }
 }
 
+// MARK: Preview
 #Preview {
     NavigationStack {
         PharmacyView()

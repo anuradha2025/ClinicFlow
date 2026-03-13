@@ -27,5 +27,5 @@ struct Product: Identifiable, Codable {
         Product(name: "Protein Powder", description: "High quality whey protein to support muscle growth and recovery after workouts.", price: 8500, discountPercent: 12, imageName: "figure.strengthtraining.traditional", category: "Sport and health", variants: ["500 g Chocolate", "500 g Vanilla", "1 kg Chocolate"], rating: 4.6, soldCount: 75),
     ]
 
-    static let categories = ["Vitamins and minerals", "Beauty and care", "Medicines", "Sport and health"]
+    static let categories = ["Vitamins", "Beauty and care", "Medicines", "Sport and health"]
 }
