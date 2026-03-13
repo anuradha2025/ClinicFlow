@@ -29,7 +29,6 @@ struct HospitalIndoorMapView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            // Background grid pattern
             Color(red: 0.91, green: 0.93, blue: 0.97).ignoresSafeArea()
 
             VStack(spacing: 0) {
@@ -40,7 +39,6 @@ struct HospitalIndoorMapView: View {
                         colors: [Color.cfBlue, Color(red: 0.11, green: 0.30, blue: 0.78)],
                         startPoint: .topLeading, endPoint: .bottomTrailing
                     )
-                    // Decorative circles
                     Circle().fill(Color.white.opacity(0.06))
                         .frame(width: 120).offset(x: 140, y: -10)
                     Circle().fill(Color.white.opacity(0.04))
@@ -115,10 +113,8 @@ struct HospitalIndoorMapView: View {
                 // ── Map Canvas ───────────────────────────────────────
                 GeometryReader { geo in
                     ZStack {
-                        // Dot grid background
                         DotGridBackground()
 
-                        // The map itself — freely pannable & zoomable
                         FloorCanvas(
                             rooms: currentRooms,
                             selectedRoom: $selectedRoom,
@@ -145,7 +141,7 @@ struct HospitalIndoorMapView: View {
                             )
                         )
 
-                        // Zoom hints
+                        // Zoom controls
                         VStack {
                             Spacer()
                             HStack {
@@ -282,7 +278,7 @@ struct FloorCanvas: View {
 
     var body: some View {
         ZStack {
-            // Outer building glow
+            // Outer glow
             RoundedRectangle(cornerRadius: 24)
                 .fill(floorColor.opacity(0.06))
                 .frame(width: 560, height: 440)
@@ -291,13 +287,11 @@ struct FloorCanvas: View {
             RoundedRectangle(cornerRadius: 22)
                 .fill(Color(red: 0.96, green: 0.97, blue: 0.99))
                 .frame(width: 540, height: 420)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 22)
-                        .stroke(floorColor.opacity(0.25), lineWidth: 2)
-                )
+                .overlay(RoundedRectangle(cornerRadius: 22)
+                    .stroke(floorColor.opacity(0.25), lineWidth: 2))
                 .shadow(color: floorColor.opacity(0.08), radius: 12, x: 0, y: 4)
 
-            // Dotted path lines (decorative)
+            // Dotted path lines
             DottedPathLines(floorColor: floorColor)
 
             // Wing labels
@@ -327,22 +321,15 @@ struct FloorCanvas: View {
                 .rotationEffect(.degrees(90))
                 .offset(x: 258, y: 0)
 
-            // Centre hub circle
+            // Lift hub
             ZStack {
-                Circle()
-                    .fill(floorColor.opacity(0.10))
-                    .frame(width: 64, height: 64)
-                Circle()
-                    .stroke(floorColor.opacity(0.20), lineWidth: 1.5)
-                    .frame(width: 64, height: 64)
-                Circle()
-                    .fill(floorColor.opacity(0.15))
-                    .frame(width: 40, height: 40)
+                Circle().fill(floorColor.opacity(0.10)).frame(width: 64, height: 64)
+                Circle().stroke(floorColor.opacity(0.20), lineWidth: 1.5).frame(width: 64, height: 64)
+                Circle().fill(floorColor.opacity(0.15)).frame(width: 40, height: 40)
                 VStack(spacing: 1) {
                     Text("⬆⬇").font(.system(size: 10))
                     Text("LIFT").font(.system(size: 6, weight: .black))
-                        .foregroundColor(floorColor)
-                        .kerning(0.5)
+                        .foregroundColor(floorColor).kerning(0.5)
                 }
             }
             .offset(x: 180, y: 0)
@@ -363,7 +350,7 @@ struct FloorCanvas: View {
             .frame(width: 52, height: 44)
             .offset(x: -200, y: 0)
 
-            // Floor badge — top right corner
+            // Floor badge
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(floorColor)
@@ -388,7 +375,6 @@ struct FloorCanvas: View {
 
             // Entrance & Exit (ground floor only)
             if showEntrance {
-                // Entrance — bottom left
                 HStack(spacing: 5) {
                     Image(systemName: "arrow.right.circle.fill")
                         .font(.system(size: 14))
@@ -406,7 +392,6 @@ struct FloorCanvas: View {
                     .stroke(Color.cfSuccess.opacity(0.4), lineWidth: 1))
                 .offset(x: -150, y: 196)
 
-                // Exit — bottom right
                 HStack(spacing: 5) {
                     Text("EXIT")
                         .font(.system(size: 7, weight: .black))
@@ -440,36 +425,30 @@ struct DottedPathLines: View {
             let color = GraphicsContext.Shading.color(floorColor.opacity(0.18))
             let dash: [CGFloat] = [4, 6]
 
-            // Horizontal path
             var hPath = Path()
             hPath.move(to: CGPoint(x: 20, y: cy))
             hPath.addLine(to: CGPoint(x: size.width - 20, y: cy))
-            context.stroke(hPath, with: color,
-                           style: StrokeStyle(lineWidth: 1.5, dash: dash))
+            context.stroke(hPath, with: color, style: StrokeStyle(lineWidth: 1.5, dash: dash))
 
-            // Vertical path
             var vPath = Path()
             vPath.move(to: CGPoint(x: cx, y: 20))
             vPath.addLine(to: CGPoint(x: cx, y: size.height - 20))
-            context.stroke(vPath, with: color,
-                           style: StrokeStyle(lineWidth: 1.5, dash: dash))
+            context.stroke(vPath, with: color, style: StrokeStyle(lineWidth: 1.5, dash: dash))
 
-            // Diagonal accent lines
             var d1 = Path()
             d1.move(to: CGPoint(x: cx - 80, y: cy - 60))
             d1.addLine(to: CGPoint(x: cx + 80, y: cy - 60))
-            context.stroke(d1, with: color,
-                           style: StrokeStyle(lineWidth: 1, dash: dash))
+            context.stroke(d1, with: color, style: StrokeStyle(lineWidth: 1, dash: dash))
 
             var d2 = Path()
             d2.move(to: CGPoint(x: cx - 80, y: cy + 60))
             d2.addLine(to: CGPoint(x: cx + 80, y: cy + 60))
-            context.stroke(d2, with: color,
-                           style: StrokeStyle(lineWidth: 1, dash: dash))
+            context.stroke(d2, with: color, style: StrokeStyle(lineWidth: 1, dash: dash))
         }
         .frame(width: 540, height: 420)
     }
 }
+
 // MARK: - Indoor Room Cell
 struct IndoorRoomCell: View {
     let room: IndoorRoom
@@ -479,20 +458,14 @@ struct IndoorRoomCell: View {
     var body: some View {
         Button(action: onTap) {
             ZStack {
+                RoundedRectangle(cornerRadius: 10).fill(room.type.bgColor)
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(room.type.bgColor)
-
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(
-                        room.type.accentColor.opacity(isSelected ? 1.0 : 0.4),
-                        lineWidth: isSelected ? 2.5 : 1.5
-                    )
-
+                    .stroke(room.type.accentColor.opacity(isSelected ? 1.0 : 0.4),
+                            lineWidth: isSelected ? 2.5 : 1.5)
                 if isSelected {
                     RoundedRectangle(cornerRadius: 10)
                         .fill(room.type.accentColor.opacity(0.08))
                 }
-
                 VStack(spacing: 4) {
                     Text(room.type.icon)
                         .font(.system(size: room.size.width > 100 ? 18 : 13))
@@ -506,10 +479,8 @@ struct IndoorRoomCell: View {
             }
             .frame(width: room.size.width, height: room.size.height)
             .scaleEffect(isSelected ? 1.04 : 1.0)
-            .shadow(
-                color: isSelected ? room.type.accentColor.opacity(0.3) : .clear,
-                radius: 8, x: 0, y: 2
-            )
+            .shadow(color: isSelected ? room.type.accentColor.opacity(0.3) : .clear,
+                    radius: 8, x: 0, y: 2)
         }
         .offset(x: room.position.x, y: room.position.y)
         .zIndex(isSelected ? 10 : 1)
@@ -524,7 +495,6 @@ struct IndoorRoomCard: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Drag handle
             RoundedRectangle(cornerRadius: 3)
                 .fill(Color.cfDivider)
                 .frame(width: 36, height: 4)
@@ -607,27 +577,42 @@ struct IndoorRoomCard: View {
     }
 }
 
-// MARK: - Room Type (unchanged)
+// MARK: - Room Type
 enum IndoorRoomType: CaseIterable {
-    case reception, emergency, pharmacy, lab, doctor, theatre, ward, icu, xray, toilet
+    case reception, emergency, pharmacy, lab, doctor, theatre, ward, icu, xray, toilet, opd
+
     var icon: String {
         switch self {
-        case .reception: return "🛎"; case .emergency: return "🚨"
-        case .pharmacy:  return "💊"; case .lab:       return "🧪"
-        case .doctor:    return "🩺"; case .theatre:   return "⚕️"
-        case .ward:      return "🛏"; case .icu:       return "❤️"
-        case .xray:      return "🔬"; case .toilet:    return "🚻"
+        case .reception: return "🛎"
+        case .emergency: return "🚨"
+        case .pharmacy:  return "💊"
+        case .lab:       return "🧪"
+        case .doctor:    return "🩺"
+        case .theatre:   return "⚕️"
+        case .ward:      return "🛏"
+        case .icu:       return "❤️"
+        case .xray:      return "🔬"
+        case .toilet:    return "🚻"
+        case .opd:       return "🏥"
         }
     }
+
     var label: String {
         switch self {
-        case .reception: return "Reception"; case .emergency: return "Emergency"
-        case .pharmacy:  return "Pharmacy";  case .lab:       return "Laboratory"
-        case .doctor:    return "Consulting"; case .theatre:  return "Theatre"
-        case .ward:      return "Ward";       case .icu:      return "ICU"
-        case .xray:      return "Radiology";  case .toilet:   return "Facilities"
+        case .reception: return "Reception"
+        case .emergency: return "Emergency"
+        case .pharmacy:  return "Pharmacy"
+        case .lab:       return "Laboratory"
+        case .doctor:    return "Consulting"
+        case .theatre:   return "Theatre"
+        case .ward:      return "Ward"
+        case .icu:       return "ICU"
+        case .xray:      return "Radiology"
+        case .toilet:    return "Facilities"
+        case .opd:       return "OPD"
         }
     }
+
     var accentColor: Color {
         switch self {
         case .reception: return Color(red: 0.73, green: 0.46, blue: 0.09)
@@ -640,13 +625,15 @@ enum IndoorRoomType: CaseIterable {
         case .icu:       return Color(red: 0.89, green: 0.29, blue: 0.27)
         case .xray:      return Color(red: 0.83, green: 0.33, blue: 0.49)
         case .toilet:    return Color(red: 0.53, green: 0.53, blue: 0.56)
+        case .opd:       return Color(red: 0.20, green: 0.60, blue: 0.86)
         }
     }
+
     var bgColor: Color { accentColor.opacity(0.12) }
     var textColor: Color { accentColor }
 }
 
-// MARK: - Room Model (unchanged)
+// MARK: - Room Model
 struct IndoorRoom: Identifiable {
     let id = UUID()
     let name: String
@@ -659,34 +646,39 @@ struct IndoorRoom: Identifiable {
     let wing: String
 }
 
-// MARK: - Room Data (unchanged)
+// MARK: - Ground Floor
 let groundRooms: [IndoorRoom] = [
     IndoorRoom(name: "Main Reception", type: .reception, position: CGPoint(x: -175, y: -155), size: CGSize(width: 140, height: 80), description: "Patient registration & inquiries", hours: "24 hrs", floorName: "Ground floor", wing: "North wing"),
     IndoorRoom(name: "Emergency", type: .emergency, position: CGPoint(x: -20, y: -155), size: CGSize(width: 90, height: 80), description: "Trauma & urgent medical care", hours: "24 hrs", floorName: "Ground floor", wing: "North wing"),
     IndoorRoom(name: "Pharmacy", type: .pharmacy, position: CGPoint(x: 105, y: -155), size: CGSize(width: 120, height: 80), description: "Medications & prescriptions", hours: "7AM–10PM", floorName: "Ground floor", wing: "North wing"),
     IndoorRoom(name: "X-Ray / MRI", type: .xray, position: CGPoint(x: 220, y: -155), size: CGSize(width: 110, height: 80), description: "Radiology & imaging", hours: "8AM–6PM", floorName: "Ground floor", wing: "North wing"),
+    IndoorRoom(name: "OPD", type: .opd, position: CGPoint(x: -175, y: -55), size: CGSize(width: 130, height: 70), description: "Outpatient department – general consultations", hours: "8AM–6PM", floorName: "Ground floor", wing: "Central"),
     IndoorRoom(name: "Laboratory", type: .lab, position: CGPoint(x: -175, y: 60), size: CGSize(width: 130, height: 90), description: "Blood tests & pathology", hours: "7AM–8PM", floorName: "Ground floor", wing: "South wing"),
     IndoorRoom(name: "Pharmacy 2", type: .pharmacy, position: CGPoint(x: -30, y: 60), size: CGSize(width: 110, height: 90), description: "Outpatient dispensary", hours: "8AM–9PM", floorName: "Ground floor", wing: "South wing"),
     IndoorRoom(name: "Consultation 1", type: .doctor, position: CGPoint(x: 95, y: 60), size: CGSize(width: 115, height: 90), description: "General physician – Room 101", hours: "8AM–5PM", floorName: "Ground floor", wing: "South wing"),
     IndoorRoom(name: "Consultation 2", type: .doctor, position: CGPoint(x: 222, y: 60), size: CGSize(width: 115, height: 90), description: "General physician – Room 102", hours: "8AM–5PM", floorName: "Ground floor", wing: "South wing"),
 ]
 
+// MARK: - First Floor
 let firstRooms: [IndoorRoom] = [
     IndoorRoom(name: "Doctor Room 1", type: .doctor, position: CGPoint(x: -175, y: -155), size: CGSize(width: 130, height: 80), description: "Cardiology consultations", hours: "9AM–5PM", floorName: "1st floor", wing: "North wing"),
     IndoorRoom(name: "Doctor Room 2", type: .doctor, position: CGPoint(x: -30, y: -155), size: CGSize(width: 110, height: 80), description: "Neurology consultations", hours: "10AM–4PM", floorName: "1st floor", wing: "North wing"),
     IndoorRoom(name: "Doctor Room 3", type: .doctor, position: CGPoint(x: 100, y: -155), size: CGSize(width: 115, height: 80), description: "Orthopaedics", hours: "8AM–3PM", floorName: "1st floor", wing: "North wing"),
     IndoorRoom(name: "Doctor Room 4", type: .doctor, position: CGPoint(x: 225, y: -155), size: CGSize(width: 115, height: 80), description: "Paediatrics", hours: "8AM–5PM", floorName: "1st floor", wing: "North wing"),
+    IndoorRoom(name: "OPD Waiting", type: .opd, position: CGPoint(x: -175, y: -55), size: CGSize(width: 130, height: 70), description: "OPD waiting area – 1st floor", hours: "8AM–6PM", floorName: "1st floor", wing: "Central"),
     IndoorRoom(name: "Nurse Station", type: .ward, position: CGPoint(x: -175, y: 60), size: CGSize(width: 140, height: 90), description: "Central nursing & patient care", hours: "24 hrs", floorName: "1st floor", wing: "South wing"),
     IndoorRoom(name: "Ward A", type: .ward, position: CGPoint(x: -20, y: 60), size: CGSize(width: 90, height: 90), description: "General inpatient – 8 beds", hours: "24 hrs", floorName: "1st floor", wing: "South wing"),
     IndoorRoom(name: "Ward B", type: .ward, position: CGPoint(x: 90, y: 60), size: CGSize(width: 90, height: 90), description: "General inpatient – 8 beds", hours: "24 hrs", floorName: "1st floor", wing: "South wing"),
     IndoorRoom(name: "Waiting Lounge", type: .reception, position: CGPoint(x: 205, y: 60), size: CGSize(width: 140, height: 90), description: "Patient & visitor waiting area", hours: "24 hrs", floorName: "1st floor", wing: "South wing"),
 ]
 
+// MARK: - Second Floor
 let secondRooms: [IndoorRoom] = [
     IndoorRoom(name: "Theatre 1", type: .theatre, position: CGPoint(x: -175, y: -155), size: CGSize(width: 140, height: 80), description: "Main operating theatre", hours: "24 hrs", floorName: "2nd floor", wing: "North wing"),
     IndoorRoom(name: "Theatre 2", type: .theatre, position: CGPoint(x: -20, y: -155), size: CGSize(width: 100, height: 80), description: "Minor procedures", hours: "8AM–8PM", floorName: "2nd floor", wing: "North wing"),
     IndoorRoom(name: "Scrub Room", type: .theatre, position: CGPoint(x: 100, y: -155), size: CGSize(width: 110, height: 80), description: "Pre-op scrub & preparation", hours: "As required", floorName: "2nd floor", wing: "North wing"),
     IndoorRoom(name: "Anaesthesia", type: .theatre, position: CGPoint(x: 220, y: -155), size: CGSize(width: 120, height: 80), description: "Anaesthesia preparation room", hours: "As required", floorName: "2nd floor", wing: "North wing"),
+    IndoorRoom(name: "OPD Specialist", type: .opd, position: CGPoint(x: -175, y: -55), size: CGSize(width: 130, height: 70), description: "Specialist OPD clinics", hours: "9AM–5PM", floorName: "2nd floor", wing: "Central"),
     IndoorRoom(name: "ICU", type: .icu, position: CGPoint(x: -175, y: 60), size: CGSize(width: 140, height: 90), description: "Intensive care – 6 beds", hours: "24 hrs", floorName: "2nd floor", wing: "South wing"),
     IndoorRoom(name: "HDU", type: .icu, position: CGPoint(x: -20, y: 60), size: CGSize(width: 100, height: 90), description: "High dependency – 4 beds", hours: "24 hrs", floorName: "2nd floor", wing: "South wing"),
     IndoorRoom(name: "Recovery", type: .ward, position: CGPoint(x: 100, y: 60), size: CGSize(width: 115, height: 90), description: "Post-surgery recovery room", hours: "24 hrs", floorName: "2nd floor", wing: "South wing"),
