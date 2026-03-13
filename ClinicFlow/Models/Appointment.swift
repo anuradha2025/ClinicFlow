@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum AppointmentStatus: String, Codable {
     case upcoming, checkedIn, completed, cancelled, rescheduled
@@ -48,8 +49,6 @@ enum QueueEntryStatus: String, Codable {
         }
     }
 }
-
-import SwiftUI
 
 struct Appointment: Identifiable, Codable, Hashable {
     let id: UUID

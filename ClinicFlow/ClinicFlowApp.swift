@@ -11,12 +11,29 @@ import SwiftUI
 struct ClinicFlowApp: App {
     @StateObject private var appState = AppState()
     @StateObject private var nav = AppNavigation()
+    @StateObject private var authVM = AuthViewModel()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
                 .environmentObject(appState)
                 .environmentObject(nav)
+                .environmentObject(authVM)
         }
+    }
+}
+
+struct RootView: View {
+    @EnvironmentObject var authVM: AuthViewModel
+
+    var body: some View {
+        Group {
+            if authVM.isLoggedIn {
+                ContentView()
+            } else {
+                SplashView()
+            }
+        }
+        .animation(.easeInOut, value: authVM.isLoggedIn)
     }
 }
