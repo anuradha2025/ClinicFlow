@@ -11,6 +11,8 @@ struct MyAppointmentsView: View {
     @State private var selectedTab = 0
     private let allAppointments = MockDataService.shared.appointments
     @State private var showNotifications = false
+    @EnvironmentObject var appState: AppState
+    @State private var navigationKey = 0
 
     private var unreadCount: Int {
         SampleNotifications.all.filter { !$0.isRead }.count
@@ -92,6 +94,12 @@ struct MyAppointmentsView: View {
                         }
                     }
                 }
+            }
+        }
+        .id(navigationKey)
+        .onChange(of: appState.popToRoot) { shouldPop in
+            if shouldPop {
+                navigationKey += 1
             }
         }
         .sheet(isPresented: $showNotifications) {

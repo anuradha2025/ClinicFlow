@@ -13,6 +13,8 @@ struct LaboratoryView: View {
     @State private var selectedCat = "All"
     @State private var pageTab     = 0
     @State private var showNotifications = false
+    @EnvironmentObject var appState: AppState
+    @State private var navigationKey = 0
 
     private var unreadCount: Int {
         SampleNotifications.all.filter { !$0.isRead }.count
@@ -66,6 +68,12 @@ struct LaboratoryView: View {
                             .transition(.opacity)
                     }
                 }
+            }
+        }
+        .id(navigationKey)
+        .onChange(of: appState.popToRoot) { shouldPop in
+            if shouldPop {
+                navigationKey += 1
             }
         }
         .onAppear {

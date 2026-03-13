@@ -11,6 +11,7 @@ struct HomeView: View {
     @StateObject private var vm = HomeViewModel()
     @EnvironmentObject var appState: AppState
     @State private var showNotifications = false
+    @State private var navigationKey = 0
 
     var unreadCount: Int {
         SampleNotifications.all.filter { !$0.isRead }.count
@@ -108,7 +109,13 @@ struct HomeView: View {
             .background(Color.cfBackground)
             .navigationBarTitleDisplayMode(.inline)
         }
+        .id(navigationKey)
         .onAppear { vm.loadData() }
+        .onChange(of: appState.popToRoot) { shouldPop in
+            if shouldPop {
+                navigationKey += 1
+            }
+        }
 
         // Notifications Sheet - use Thulani notifications
         .sheet(isPresented: $showNotifications) {

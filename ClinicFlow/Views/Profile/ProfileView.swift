@@ -10,6 +10,7 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject var appState: AppState
     @State private var showNotifications = false
+    @State private var navigationKey = 0
 
     private var unreadCount: Int {
         SampleNotifications.all.filter { !$0.isRead }.count
@@ -114,6 +115,12 @@ struct ProfileView: View {
                         .padding(.top, 16)
                     }
                 }
+            }
+        }
+        .id(navigationKey)
+        .onChange(of: appState.popToRoot) { shouldPop in
+            if shouldPop {
+                navigationKey += 1
             }
         }
         .sheet(isPresented: $showNotifications) {

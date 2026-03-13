@@ -73,9 +73,8 @@ struct FindDoctorView: View {
         .id(navigationKey)
         .onAppear { vm.loadDoctors() }
         .onChange(of: appState.popToRoot) { shouldPop in
-            if shouldPop && appState.selectedTab == 0 {
+            if shouldPop {
                 navigationKey += 1  // rotates the NavigationStack's id, clearing all pushed views
-                appState.popToRoot = false
             }
         }
         .sheet(isPresented: $showNotifications) {

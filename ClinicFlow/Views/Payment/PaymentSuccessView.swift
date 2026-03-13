@@ -138,6 +138,10 @@ struct PaymentSuccessView: View {
             Button {
                 appState.selectedTab = 0
                 appState.popToRoot = true
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    appState.popToRoot = false
+                }
             } label: {
                 Text("Back to Home")
                     .fontWeight(.medium)
