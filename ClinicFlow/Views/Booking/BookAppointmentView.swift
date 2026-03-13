@@ -52,7 +52,7 @@ struct BookAppointmentView: View {
                     .padding(.horizontal)
 
                 // Book Button
-                NavigationLink(destination: PaymentView(billing: vm.billing, doctor: vm.doctor)) {
+                NavigationLink(destination: AppointmentPaymentView(billing: vm.billing, doctor: vm.doctor)) {
                     Text("Book Appointment")
                         .fontWeight(.semibold)
                         .foregroundColor(.white)

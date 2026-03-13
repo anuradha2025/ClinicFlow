@@ -3,6 +3,7 @@ import SwiftUI
 
 struct OrderSuccessView: View {
     @ObservedObject var pharmVM: PharmacyViewModel
+    @EnvironmentObject var appState: AppState
     @State private var scaleEffect: CGFloat = 0.5
     @State private var opacity: Double = 0
 
@@ -57,14 +58,20 @@ struct OrderSuccessView: View {
                         .padding(16).background(Color.white).cornerRadius(14)
 
                         VStack(spacing: 12) {
-                            NavigationLink(destination: PharmacyView()) {
+                            Button {
+                                appState.selectedTab = 4
+                                appState.popToRoot = true
+                            } label: {
                                 Text("My Orders")
                                     .font(.system(size: 15, weight: .semibold, design: .rounded))
                                     .foregroundColor(.blue)
                                     .frame(maxWidth: .infinity).frame(height: 50)
                                     .background(RoundedRectangle(cornerRadius: 14).stroke(Color.blue, lineWidth: 1.5))
                             }
-                            NavigationLink(destination: PharmacyView()) {
+                            Button {
+                                appState.selectedTab = 0
+                                appState.popToRoot = true
+                            } label: {
                                 Text("To the Dashboard")
                                     .font(.system(size: 15, weight: .semibold, design: .rounded))
                                     .foregroundColor(.white)
@@ -93,5 +100,6 @@ struct OrderSuccessView: View {
     NavigationStack {
         OrderSuccessView(pharmVM: PharmacyViewModel())
     }
+    .environmentObject(AppState())
     .environmentObject(AuthViewModel())
 }

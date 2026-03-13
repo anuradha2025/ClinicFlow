@@ -69,7 +69,7 @@ struct PreviousAppointmentDetailView: View {
                                 }
                             }
 
-                            Button {} label: {
+                            NavigationLink(destination: ProceedPharmacyView(pharmVM: PharmacyViewModel(), appointment: appointment)) {
                                 HStack {
                                     Text("Proceed to Pharmacy")
                                         .font(.subheadline.bold())
@@ -81,6 +81,7 @@ struct PreviousAppointmentDetailView: View {
                                 .background(Color.cfPrimary)
                                 .cornerRadius(10)
                             }
+                            .buttonStyle(PlainButtonStyle())
                         }
                         .padding()
                         .background(Color.white)

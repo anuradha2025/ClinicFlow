@@ -22,6 +22,7 @@ class PharmacyViewModel: ObservableObject {
 
     // Prescription tracking
     @Published var prescriptionTotal: Double = 0
+    @Published var prescriptionItemCount: Int = 0
     @Published var prescriptionQueueStatus: String = "Pending"
 
     var filteredProducts: [Product] {
@@ -50,6 +51,10 @@ class PharmacyViewModel: ObservableObject {
         cartItems.reduce(0) { $0 + $1.quantity }
     }
 
+    var checkoutItemCount: Int {
+        cartCount > 0 ? cartCount : prescriptionItemCount
+    }
+
     var subtotal: Double {
         cartItems.reduce(0) { $0 + $1.totalPrice }
     }
@@ -64,7 +69,10 @@ class PharmacyViewModel: ObservableObject {
     var platformFee: Double { 600 }
 
     var totalAmount: Double {
-        subtotal - totalDiscount + deliveryFee + platformFee
+        if subtotal > 0 {
+            return subtotal - totalDiscount + deliveryFee + platformFee
+        }
+        return prescriptionTotal
     }
 
     func addToCart(product: Product, variant: String) {
@@ -105,8 +113,9 @@ class PharmacyViewModel: ObservableObject {
         cartItems = []
     }
 
-    func setPrescription(total: Double) {
+    func setPrescription(total: Double, itemCount: Int) {
         prescriptionTotal = total
+        prescriptionItemCount = itemCount
         prescriptionQueueStatus = "Preparing"
         // simulate queue status change to ready after delay
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {

@@ -10,7 +10,6 @@ struct OTPView: View {
     @State private var canResend: Bool = false
     @State private var shakeOffset: CGFloat = 0
     @State private var timer: Timer?
-    @State private var navigateToAppointment: Bool = false
     
     var otpCode: String { otpDigits.joined() }
     var isComplete: Bool { otpDigits.allSatisfy { $0.count == 1 } }
@@ -89,7 +88,7 @@ struct OTPView: View {
                 
                 Spacer().frame(height: 40)
                 
-                PrimaryButton(
+                AuthPrimaryButton(
                     label: authVM.otpVerified ? "Verified ✓" : "Verify Code",
                     icon: authVM.otpVerified ? "checkmark.circle.fill" : "shield.checkered",
                     isEnabled: isComplete,
@@ -101,13 +100,10 @@ struct OTPView: View {
                 Spacer()
             }
         }
-        .navigationDestination(isPresented: $navigateToAppointment) {
-            AppointmentView()
-        }
         .onChange(of: authVM.otpVerified) { _, verified in
             if verified {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                    navigateToAppointment = true
+                    authVM.isLoggedIn = true
                 }
             }
         }

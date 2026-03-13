@@ -2,18 +2,60 @@ import SwiftUI
 
 struct ProceedPharmacyView: View {
     @ObservedObject var pharmVM: PharmacyViewModel
+    let appointment: Appointment?
     @Environment(\.dismiss) var dismiss
     @State private var showPaymentAlert = false
     @State private var navigateToPayment = false
 
-    private let medicines: [Medicine] = [
-        .init(name: "Amoxicillin 500mg", quantity: 1, price: 250),
-        .init(name: "Paracetamol 500mg", quantity: 2, price: 120),
-        .init(name: "Vitamin D 1000IU", quantity: 1, price: 180)
-    ]
+    private var medicines: [Medicine] {
+        if let appointment, !appointment.prescription.isEmpty {
+            return appointment.prescription.map { item in
+                Medicine(
+                    name: "\(item.name) \(item.dosage)",
+                    quantity: 1,
+                    price: price(for: item)
+                )
+            }
+        }
+
+        return [
+            .init(name: "Amoxicillin 500mg", quantity: 1, price: 250),
+            .init(name: "Paracetamol 500mg", quantity: 2, price: 120),
+            .init(name: "Vitamin D 1000IU", quantity: 1, price: 180)
+        ]
+    }
+
+    private var doctorName: String {
+        appointment?.doctor.name ?? "Dr. Maya Patel"
+    }
 
     private var totalAmount: Double {
         medicines.reduce(0) { $0 + ($1.price * Double($1.quantity)) }
+    }
+
+    private func price(for item: PrescriptionItem) -> Double {
+        let normalizedName = item.name.lowercased()
+
+        if normalizedName.contains("paracetamol") {
+            return 240
+        }
+        if normalizedName.contains("amoxicillin") {
+            return 250
+        }
+        if normalizedName.contains("vitamin d") {
+            return 180
+        }
+        if normalizedName.contains("vitamin c") {
+            return 200
+        }
+        if normalizedName.contains("cetirizine") {
+            return 160
+        }
+        if normalizedName.contains("salts") {
+            return 230
+        }
+
+        return 200
     }
 
     var body: some View {
@@ -43,7 +85,7 @@ struct ProceedPharmacyView: View {
                     VStack(alignment: .leading, spacing: 16) {
                         // Doctor info
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Dr. Maya Patel")
+                            Text(doctorName)
                                 .font(.system(size: 20, weight: .bold, design: .rounded))
                             Text("Prescription Summary")
                                 .font(.system(size: 14, design: .rounded))
@@ -124,6 +166,9 @@ struct ProceedPharmacyView: View {
             }
         }
         .navigationBarHidden(true)
+        .onAppear {
+            pharmVM.setPrescription(total: totalAmount, itemCount: medicines.reduce(0) { $0 + $1.quantity })
+        }
         .alert("Order Placed", isPresented: $showPaymentAlert) {
             Button("Proceed to Payment") {
                 navigateToPayment = true
@@ -144,6 +189,6 @@ private struct Medicine: Identifiable, Equatable {
 
 #Preview {
     NavigationStack {
-        ProceedPharmacyView(pharmVM: PharmacyViewModel())
+        ProceedPharmacyView(pharmVM: PharmacyViewModel(), appointment: nil)
     }
 }

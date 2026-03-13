@@ -98,7 +98,7 @@ struct GlassTextField: View {
 }
 
 
-struct PrimaryButton: View {
+struct AuthPrimaryButton: View {
     let label: String
     let icon: String
     var isEnabled: Bool = true

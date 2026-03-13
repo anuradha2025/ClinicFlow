@@ -204,8 +204,8 @@ struct LabPaymentView: View {
                         // Order Summary
                         CFCard {
                             VStack(spacing: 10) {
-                                SummaryRow(label: "Test Fee",    value: "Rs. \(test.price)")
-                                SummaryRow(label: "Booking Fee", value: "Free")
+                                LabSummaryRow(label: "Test Fee",    value: "Rs. \(test.price)")
+                                LabSummaryRow(label: "Booking Fee", value: "Free")
                                 CFDivider()
                                 HStack {
                                     Text("Total")

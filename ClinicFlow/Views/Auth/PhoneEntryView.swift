@@ -118,7 +118,7 @@ struct PhoneEntryView: View {
                     Spacer().frame(height: 20)
 
                     // SEND CODE BUTTON
-                    PrimaryButton(
+                    AuthPrimaryButton(
                         label: "Send Code",
                         icon: "paperplane.fill",
                         isEnabled: phoneNumber.count >= 9,

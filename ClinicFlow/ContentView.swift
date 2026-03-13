@@ -26,8 +26,8 @@ struct ContentView: View {
                     .tabItem { Label("Laboratory", systemImage: "cross.case.fill") }
                     .tag(3)
 
-                ProfileView()
-                    .tabItem { Label("Profile", systemImage: "person.fill") }
+                PharmacyTabRoot()
+                    .tabItem { Label("Pharmacy", systemImage: "pills.fill") }
                     .tag(4)
             }
             .tint(.cfBlue)
@@ -79,5 +79,23 @@ struct PlaceholderView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.cfBg.ignoresSafeArea())
+    }
+}
+
+private struct PharmacyTabRoot: View {
+    @EnvironmentObject var appState: AppState
+    @State private var navigationKey = 0
+
+    var body: some View {
+        NavigationStack {
+            PharmacyView(showsBackButton: false)
+        }
+        .id(navigationKey)
+        .onChange(of: appState.popToRoot) { shouldPop in
+            if shouldPop && appState.selectedTab == 4 {
+                navigationKey += 1
+                appState.popToRoot = false
+            }
+        }
     }
 }

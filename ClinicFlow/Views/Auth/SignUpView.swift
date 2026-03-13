@@ -267,7 +267,7 @@ struct SignUpView: View {
                     
 
                     Spacer().frame(height: 28)
-                    PrimaryButton(
+                    AuthPrimaryButton(
                         label: "Create Account",
                         icon: "checkmark.circle.fill",
                         isEnabled: isFormValid,

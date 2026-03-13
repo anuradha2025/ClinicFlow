@@ -188,7 +188,7 @@ struct LoginView: View {
                     
                 
                     Spacer().frame(height: 28)
-                    PrimaryButton(
+                    AuthPrimaryButton(
                         label: "Sign In",
                         icon: "arrow.right.circle.fill",
                         isEnabled: isFormValid,

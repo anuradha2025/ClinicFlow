@@ -5,6 +5,7 @@ import SwiftUI
 struct AppointmentView: View {
     
     @EnvironmentObject var authVM: AuthViewModel
+    @EnvironmentObject var appState: AppState
     
     var body: some View {
         
@@ -27,7 +28,9 @@ struct AppointmentView: View {
                 
                 
                 // PHARMACY BUTTON
-                NavigationLink(destination: PharmacyView()) {
+                Button {
+                    appState.selectedTab = 4
+                } label: {
                     HStack(spacing: 8) {
                         Image(systemName: "cross.case.fill")
                             .font(.system(size: 18, weight: .bold))
@@ -71,4 +74,5 @@ struct AppointmentView: View {
         AppointmentView()
     }
     .environmentObject(AuthViewModel())
+    .environmentObject(AppState())
 }

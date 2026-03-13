@@ -8,7 +8,7 @@
 
 import SwiftUI
 // MARK: - Summary Row
-struct SummaryRow: View {
+struct LabSummaryRow: View {
     let label: String
     let value: String
 

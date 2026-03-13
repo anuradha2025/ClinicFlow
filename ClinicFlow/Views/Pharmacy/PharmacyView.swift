@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PharmacyView: View {
+    var showsBackButton: Bool = true
     @StateObject var pharmVM = PharmacyViewModel()
     @Environment(\.dismiss) var dismiss
 
@@ -20,12 +21,19 @@ struct PharmacyView: View {
 
                     // MARK: Header
                     HStack {
-                        Button(action: { dismiss() }) {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(.black)
-                                .padding(10)
-                                .background(Circle().fill(Color.white))
+                        Group {
+                            if showsBackButton {
+                                Button(action: { dismiss() }) {
+                                    Image(systemName: "chevron.left")
+                                        .font(.system(size: 16, weight: .semibold))
+                                        .foregroundColor(.black)
+                                        .padding(10)
+                                        .background(Circle().fill(Color.white))
+                                }
+                            } else {
+                                Color.clear
+                                    .frame(width: 36, height: 36)
+                            }
                         }
                         Spacer()
                         Text("Pharmacy")
@@ -74,7 +82,7 @@ struct PharmacyView: View {
                     .background(Color.white)
 
                         // MARK: Checkout
-                        NavigationLink(destination: ProceedPharmacyView(pharmVM: pharmVM)) {
+                        NavigationLink(destination: ProceedPharmacyView(pharmVM: pharmVM, appointment: nil)) {
                             HStack(spacing: 12) {
                                 Image(systemName: "cart.badge.plus")
                                     .font(.system(size: 18))
