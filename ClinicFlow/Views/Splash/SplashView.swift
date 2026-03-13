@@ -100,17 +100,6 @@ struct SplashView: View {
                     .opacity(buttonOpacity)
                     .offset(y: buttonOffset)
                     
-                    Spacer().frame(height: 16)
-                    
-                    NavigationLink(destination: LoginView()) {
-                        HStack(spacing: 4) {
-                            Text("Already have an account?").foregroundColor(.white.opacity(0.5))
-                            Text("Sign In").foregroundColor(.white).fontWeight(.semibold)
-                        }
-                        .font(.system(size: 14, design: .rounded))
-                    }
-                    .opacity(buttonOpacity)
-                    
                     Spacer().frame(height: 48)
                 }
             }

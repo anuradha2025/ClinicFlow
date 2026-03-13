@@ -8,7 +8,7 @@ struct CartView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            Color(.systemGray6).ignoresSafeArea()
+            Color(red: 237/255, green: 241/255, blue: 1.0).ignoresSafeArea() // HEX EDF1FF
 
             VStack(spacing: 0) {
 
@@ -173,7 +173,7 @@ struct CartItemRow: View {
         HStack(spacing: 12) {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(Color(.systemGray6))
+                    .fill(Color(red: 237/255, green: 241/255, blue: 1.0)) // HEX EDF1FF
                     .frame(width: 56, height: 56)
                 Image(systemName: item.product.imageName)
                     .resizable()

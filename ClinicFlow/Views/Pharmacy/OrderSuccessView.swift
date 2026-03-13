@@ -8,7 +8,7 @@ struct OrderSuccessView: View {
 
     var body: some View {
         ZStack {
-            Color(.systemGray6).ignoresSafeArea()
+            Color(red: 237/255, green: 241/255, blue: 1.0).ignoresSafeArea() // HEX EDF1FF
 
             VStack(spacing: 0) {
 
@@ -29,7 +29,7 @@ struct OrderSuccessView: View {
             
                         VStack(spacing: 20) {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 16).fill(Color(.systemGray6)).frame(height: 180)
+                                RoundedRectangle(cornerRadius: 16).fill(Color(red: 237/255, green: 241/255, blue: 1.0)).frame(height: 180) // HEX EDF1FF
                                 VStack(spacing: 12) {
                                     ZStack {
                                         Circle().fill(Color.green.opacity(0.15)).frame(width: 80, height: 80)

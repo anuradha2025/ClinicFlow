@@ -13,7 +13,7 @@ struct PharmacyView: View {
 
     var body: some View {
         ZStack(alignment: .top) {
-            Color(.systemGray6).ignoresSafeArea()
+            Color(red: 237/255, green: 241/255, blue: 1.0).ignoresSafeArea() // HEX EDF1FF
 
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 0) {
@@ -35,7 +35,7 @@ struct PharmacyView: View {
                             ZStack(alignment: .topTrailing) {
                                 Image(systemName: "cart.fill")
                                     .font(.system(size: 20))
-                                    .foregroundColor(.black)
+                                    .foregroundColor(.blue)
                                 if pharmVM.cartCount > 0 {
                                     Circle()
                                         .fill(Color.blue)
@@ -58,7 +58,7 @@ struct PharmacyView: View {
                     // MARK: Search Bar
                     HStack(spacing: 10) {
                         Image(systemName: "magnifyingglass")
-                            .foregroundColor(.gray)
+                            .foregroundColor(.secondary)
                         TextField("Search", text: $pharmVM.searchText)
                             .font(.system(size: 15, design: .rounded))
                         Spacer()
@@ -67,13 +67,63 @@ struct PharmacyView: View {
                     }
                     .padding(.horizontal, 14)
                     .padding(.vertical, 12)
-                    .background(Color(.systemGray6))
+                    .background(Color(red: 237/255, green: 241/255, blue: 1.0)) // HEX EDF1FF
                     .cornerRadius(12)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
                     .background(Color.white)
 
+                    // MARK: Featured Slider (iOS-style)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Today’s picks")
+                            .font(.system(size: 18, weight: .bold, design: .rounded))
+                            .padding(.horizontal, 24)
+
+                        TabView {
+                            ForEach(pharmVM.suggestedProducts) { product in
+                                NavigationLink(
+                                    destination: ProductDetailView(
+                                        product: product,
+                                        pharmVM: pharmVM
+                                    )
+                                ) {
+                                    FeaturedProductCard(product: product)
+                                        .padding(.horizontal, 24)
+                                }
+                            }
+                        }
+                        .frame(height: 190)
+                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                    }
+                    .padding(.bottom, 8)
+
                     VStack(spacing: 16) {
+
+                        // MARK: Prescription Section
+                        HStack(spacing: 12) {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(Color.blue.opacity(0.08))
+                                    .frame(width: 40, height: 40)
+                                Image(systemName: "doc.text.fill")
+                                    .foregroundColor(.blue)
+                            }
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Order Via Prescription")
+                                    .font(.system(size: 13, weight: .semibold, design: .rounded))
+                                Text("Upload or scan your doctor’s prescription.")
+                                    .font(.system(size: 11, design: .rounded))
+                                    .foregroundColor(.secondary)
+                                    .lineLimit(2)
+                            }
+                            Spacer()
+                            Image(systemName: "arrow.down.circle.fill")
+                                .font(.system(size: 22))
+                                .foregroundColor(.blue)
+                        }
+                        .padding(14)
+                        .background(Color.white)
+                        .cornerRadius(16)
 
                         // MARK: Categories
                         VStack(alignment: .leading) {
@@ -95,11 +145,17 @@ struct PharmacyView: View {
                                             VStack(spacing: 8) {
                                                 ZStack {
                                                     Circle()
-                                                        .fill(pharmVM.selectedCategory == cat ? Color.blue.opacity(0.2) : Color(.systemGray5))
+                                                        .fill(
+                                                            pharmVM.selectedCategory == cat
+                                                            ? Color.blue.opacity(0.12)
+                                                            : Color(.systemGray5)
+                                                        )
                                                         .frame(width: 60, height: 60)
                                                     Image(systemName: categoryIcons[cat] ?? "pills")
                                                         .font(.system(size: 22))
-                                                        .foregroundColor(pharmVM.selectedCategory == cat ? .blue : .gray)
+                                                        .foregroundColor(
+                                                            pharmVM.selectedCategory == cat ? .blue : .secondary
+                                                        )
                                                 }
                                                 Text(cat)
                                                     .font(.system(size: 12))
@@ -117,32 +173,6 @@ struct PharmacyView: View {
                             }
                         }
                         .padding(16)
-                        .background(Color.white)
-                        .cornerRadius(16)
-
-                        // MARK: Prescription Section
-                        HStack(spacing: 12) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.orange.opacity(0.15))
-                                    .frame(width: 40, height: 40)
-                                Image(systemName: "doc.text.fill")
-                                    .foregroundColor(.orange)
-                            }
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text("Order Via Prescription")
-                                    .font(.system(size: 13, weight: .semibold, design: .rounded))
-                                Text("Upload your prescription easily")
-                                    .font(.system(size: 11, design: .rounded))
-                                    .foregroundColor(.gray)
-                                    .lineLimit(2)
-                            }
-                            Spacer()
-                            Image(systemName: "arrow.down.circle.fill")
-                                .font(.system(size: 22))
-                                .foregroundColor(.blue)
-                        }
-                        .padding(14)
                         .background(Color.white)
                         .cornerRadius(16)
 
@@ -198,13 +228,13 @@ struct ProductCard: View {
             ZStack(alignment: .topTrailing) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(Color(.systemGray6))
+                        .fill(Color(red: 237/255, green: 241/255, blue: 1.0)) // HEX EDF1FF
                         .frame(height: 110)
                     Image(systemName: product.imageName)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 60, height: 60)
-                        .foregroundColor(.orange)
+                        .foregroundColor(.blue)
                 }
 
                 // Heart Button with Animation
@@ -258,6 +288,79 @@ struct ProductCard: View {
         .background(Color.white)
         .cornerRadius(14)
         .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+    }
+}
+
+// MARK: Featured Product Card (slider style)
+struct FeaturedProductCard: View {
+    let product: Product
+
+    var body: some View {
+        ZStack(alignment: .bottomLeading) {
+            // Background
+            RoundedRectangle(cornerRadius: 20)
+                .fill(
+                    LinearGradient(
+                        colors: [Color.blue.opacity(0.9), Color.purple.opacity(0.8)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 8)
+
+            HStack {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Featured")
+                        .font(.system(size: 11, weight: .semibold, design: .rounded))
+                        .foregroundColor(Color.white.opacity(0.8))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(
+                            Capsule()
+                                .fill(Color.white.opacity(0.15))
+                        )
+
+                    Text(product.name)
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                        .foregroundColor(.white)
+                        .lineLimit(2)
+
+                    Text(product.description)
+                        .font(.system(size: 12, design: .rounded))
+                        .foregroundColor(Color.white.opacity(0.8))
+                        .lineLimit(2)
+
+                    HStack(spacing: 6) {
+                        Text("Rs. \(Int(product.discountedPrice))")
+                            .font(.system(size: 16, weight: .bold, design: .rounded))
+                            .foregroundColor(.white)
+
+                        if product.discountPercent > 0 {
+                            Text("-\(product.discountPercent)%")
+                                .font(.system(size: 11, weight: .semibold, design: .rounded))
+                                .foregroundColor(.blue)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 3)
+                                .background(Capsule().fill(Color.white))
+                        }
+                    }
+                }
+
+                Spacer()
+
+                ZStack {
+                    Circle()
+                        .fill(Color.white.opacity(0.18))
+                        .frame(width: 90, height: 90)
+                    Image(systemName: product.imageName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 55, height: 55)
+                        .foregroundColor(.white)
+                }
+            }
+            .padding(20)
+        }
     }
 }
 

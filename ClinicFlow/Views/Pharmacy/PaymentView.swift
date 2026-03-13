@@ -14,7 +14,7 @@ struct PaymentView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            Color(.systemGray6).ignoresSafeArea()
+            Color(red: 237/255, green: 241/255, blue: 1.0).ignoresSafeArea() // HEX EDF1FF
 
             VStack(spacing: 0) {
 

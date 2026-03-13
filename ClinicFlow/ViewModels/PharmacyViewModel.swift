@@ -23,7 +23,14 @@ class PharmacyViewModel: ObservableObject {
     var filteredProducts: [Product] {
         var list = products
         if selectedCategory != "All" {
-            list = list.filter { $0.category == selectedCategory }
+            let categoryToMatch: String
+            // Map display category names to actual product category values
+            if selectedCategory == "Vitamins" {
+                categoryToMatch = "Vitamins and minerals"
+            } else {
+                categoryToMatch = selectedCategory
+            }
+            list = list.filter { $0.category == categoryToMatch }
         }
         if !searchText.isEmpty {
             list = list.filter { $0.name.lowercased().contains(searchText.lowercased()) }

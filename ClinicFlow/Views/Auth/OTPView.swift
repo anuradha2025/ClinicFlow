@@ -65,18 +65,7 @@ struct OTPView: View {
                 .padding(.horizontal, 24)
                 
                 Spacer().frame(height: 16)
-                
-                if authVM.showError {
-                    HStack(spacing: 6) {
-                        Image(systemName: "exclamationmark.triangle.fill")
-                            .font(.system(size: 12))
-                        Text(authVM.errorMessage)
-                            .font(.system(size: 13, design: .rounded))
-                    }
-                    .foregroundColor(.red.opacity(0.9))
-                    Spacer().frame(height: 8)
-                }
-                
+
                 if !canResend {
                     HStack(spacing: 6) {
                         Image(systemName: "clock")
@@ -121,9 +110,6 @@ struct OTPView: View {
                     navigateToAppointment = true
                 }
             }
-        }
-        .onChange(of: authVM.showError) { _, _ in
-            if authVM.showError { shake() }
         }
         .onAppear {
             focusedIndex = 0

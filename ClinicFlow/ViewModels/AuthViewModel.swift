@@ -43,11 +43,9 @@ class AuthViewModel: ObservableObject {
         isLoading = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { [weak self] in
             self?.isLoading = false
-            if code == self?.hardcodedOTP {
-                self?.otpVerified = true
-            } else {
-                self?.triggerError("Incorrect OTP. Use 123456")
-            }
+            // Accept any code as valid
+            self?.otpVerified = true
+            self?.showError = false
         }
     }
     

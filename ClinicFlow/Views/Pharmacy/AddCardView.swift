@@ -30,7 +30,7 @@ struct AddCardView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(.systemGray6).ignoresSafeArea()
+                Color(red: 237/255, green: 241/255, blue: 1.0).ignoresSafeArea() // HEX EDF1FF
 
                 ScrollView {
                     VStack(spacing: 20) {
