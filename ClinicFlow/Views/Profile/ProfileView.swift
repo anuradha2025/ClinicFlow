@@ -35,7 +35,7 @@ struct ProfileView: View {
                                 .font(.system(size: 14))
                                 .foregroundColor(.cfTextSecondary)
 
-                            TagPill(text: "Premium Member", color: .cfBlue, filled: true)
+                            
                         }
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 24)
