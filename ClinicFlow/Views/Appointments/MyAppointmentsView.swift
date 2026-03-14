@@ -10,6 +10,13 @@ import SwiftUI
 struct MyAppointmentsView: View {
     @State private var selectedTab = 0
     private let allAppointments = MockDataService.shared.appointments
+    @State private var showNotifications = false
+    @EnvironmentObject var appState: AppState
+    @State private var navigationKey = 0
+
+    private var unreadCount: Int {
+        SampleNotifications.all.filter { !$0.isRead }.count
+    }
 
     var upcomingAppointments: [Appointment] {
         allAppointments
@@ -25,53 +32,80 @@ struct MyAppointmentsView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
+            ZStack(alignment: .top) {
+                Color.cfBg.ignoresSafeArea()
 
-                // Apple-style Segmented Picker
-                HStack(spacing: 4) {
-                    AppointmentTabPill(
-                        title: "Upcoming",
-                        count: upcomingAppointments.count,
-                        isSelected: selectedTab == 0
-                    ) { selectedTab = 0 }
-
-                    AppointmentTabPill(
-                        title: "Previous",
-                        count: previousAppointments.count,
-                        isSelected: selectedTab == 1
-                    ) { selectedTab = 1 }
-                }
-                .padding(4)
-                .background(Color(.systemGray5))
-                .cornerRadius(14)
-                .padding(.horizontal)
-                .padding(.top, 8)
-                .padding(.bottom, 16)
-
-                ScrollView {
-                    LazyVStack(spacing: 14) {
-                        if selectedTab == 0 {
-                            appointmentList(
-                                upcomingAppointments,
-                                emptyIcon: "calendar.badge.clock",
-                                emptyMessage: "No upcoming appointments",
-                                emptySubtitle: "Book an appointment with a doctor"
-                            )
-                        } else {
-                            appointmentList(
-                                previousAppointments,
-                                emptyIcon: "clock.arrow.circlepath",
-                                emptyMessage: "No previous appointments",
-                                emptySubtitle: "Your completed appointments will appear here"
-                            )
+                VStack(spacing: 0) {
+                    HStack {
+                        Text("My Appointments")
+                            .font(.system(size: 34, weight: .bold))
+                            .foregroundColor(.cfTextPrimary)
+                        Spacer()
+                        NotificationBellButton(unreadCount: unreadCount) {
+                            showNotifications = true
                         }
                     }
-                    .padding(.horizontal)
-                    .padding(.bottom, 24)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
+                    .padding(.bottom, 12)
+
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack(spacing: 0) {
+                            // Apple-style Segmented Picker
+                            HStack(spacing: 4) {
+                                AppointmentTabPill(
+                                    title: "Upcoming",
+                                    count: upcomingAppointments.count,
+                                    isSelected: selectedTab == 0
+                                ) { selectedTab = 0 }
+
+                                AppointmentTabPill(
+                                    title: "Previous",
+                                    count: previousAppointments.count,
+                                    isSelected: selectedTab == 1
+                                ) { selectedTab = 1 }
+                            }
+                            .padding(4)
+                            .background(Color(.systemGray5))
+                            .cornerRadius(14)
+                            .padding(.horizontal)
+                            .padding(.top, 16)
+                            .padding(.bottom, 16)
+
+                            LazyVStack(spacing: 14) {
+                                if selectedTab == 0 {
+                                    appointmentList(
+                                        upcomingAppointments,
+                                        emptyIcon: "calendar.badge.clock",
+                                        emptyMessage: "No upcoming appointments",
+                                        emptySubtitle: "Book an appointment with a doctor"
+                                    )
+                                } else {
+                                    appointmentList(
+                                        previousAppointments,
+                                        emptyIcon: "clock.arrow.circlepath",
+                                        emptyMessage: "No previous appointments",
+                                        emptySubtitle: "Your completed appointments will appear here"
+                                    )
+                                }
+                            }
+                            .padding(.horizontal)
+                            .padding(.bottom, 24)
+                        }
+                    }
                 }
             }
-            .background(Color(.systemGray6))
-            .navigationTitle("My Appointments")
+        }
+        .id(navigationKey)
+        .onChange(of: appState.popToRoot) { shouldPop in
+            if shouldPop {
+                navigationKey += 1
+            }
+        }
+        .sheet(isPresented: $showNotifications) {
+            NotificationsView(isPresented: $showNotifications)
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
         }
     }
 

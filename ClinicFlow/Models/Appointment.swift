@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum AppointmentStatus: String, Codable {
     case upcoming, checkedIn, completed, cancelled, rescheduled
@@ -17,11 +18,6 @@ struct PrescriptionItem: Identifiable, Codable, Hashable {
     var dosage: String
 }
 
-struct LabTest: Identifiable, Codable, Hashable {
-    let id: UUID
-    var name: String
-}
-
 struct QueueEntry: Identifiable, Codable {
     let id: Int
     let time: String
@@ -29,13 +25,14 @@ struct QueueEntry: Identifiable, Codable {
 }
 
 enum QueueEntryStatus: String, Codable {
-    case finished, checkedIn, cancelled, ongoing, you
+    case finished, checkedIn, cancelled, notAvailable, ongoing, you
 
     var label: String {
         switch self {
         case .finished:  return "Finished"
         case .checkedIn: return "Checked In"
         case .cancelled: return "Cancelled"
+        case .notAvailable: return "Not Available"
         case .ongoing:   return "On Going"
         case .you:       return "You"
         }
@@ -46,13 +43,13 @@ enum QueueEntryStatus: String, Codable {
         case .finished:  return .cfTextSecondary
         case .checkedIn: return .cfSuccess
         case .cancelled: return .cfDanger
+        case .notAvailable: return .cfTextSecondary
         case .ongoing:   return .cfPrimary
         case .you:       return .cfWarning
         }
     }
 }
 
-import SwiftUI
 struct Appointment: Identifiable, Codable, Hashable {
     let id: UUID
     var doctor: Doctor
@@ -62,7 +59,7 @@ struct Appointment: Identifiable, Codable, Hashable {
     var queueNumber: Int
     var estimatedWaitNumber: Int
     var prescription: [PrescriptionItem]
-    var labTests: [LabTest]
+    var labTests: [AppointmentLabTest]
     var queueEntries: [QueueEntry]
 
     static func == (lhs: Appointment, rhs: Appointment) -> Bool { lhs.id == rhs.id }

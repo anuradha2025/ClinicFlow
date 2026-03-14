@@ -95,7 +95,7 @@ struct UpcomingAppointmentDetailView: View {
                             }
                             .padding(.horizontal, 16)
                             .padding(.vertical, 10)
-                            .background(Color(.systemGray6))
+                            .background(Color.cfBg)
 
                             // Queue Entries
                             ForEach(appointment.queueEntries) { entry in
@@ -109,7 +109,9 @@ struct UpcomingAppointmentDetailView: View {
                                         .foregroundColor(.cfTextSecondary)
                                         .padding(.leading, 8)
                                     Spacer()
-                                    QueueStatusPill(status: entry.status)
+                                    if isToday || (entry.status != .finished && entry.status != .checkedIn) {
+                                        QueueStatusPill(status: entry.status)
+                                    }
                                 }
                                 .padding(.horizontal, 16)
                                 .padding(.vertical, 14)
@@ -153,7 +155,7 @@ struct UpcomingAppointmentDetailView: View {
             }
             .padding(.vertical)
         }
-        .background(Color(.systemGray6))
+        .background(Color.cfBg)
         .navigationTitle("Appointment Details")
         .navigationBarTitleDisplayMode(.inline)
     }

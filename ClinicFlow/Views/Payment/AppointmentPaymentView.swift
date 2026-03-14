@@ -1,5 +1,5 @@
 //
-//  PaymentView.swift
+//  AppointmentPaymentView.swift
 //  ClinicFlow
 //
 //  Created by COBSCCOMP242P-020 on 2026-03-07.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PaymentView: View {
+struct AppointmentPaymentView: View {
     @StateObject private var vm: PaymentViewModel
     @State private var showSuccess = false
     @EnvironmentObject var appState: AppState
@@ -96,14 +96,14 @@ struct PaymentView: View {
                 .disabled(!isFormValid)
                 .padding(.horizontal)
 
-                NavigationLink(
-                    destination: PaymentSuccessView(doctor: vm.doctor, billing: vm.billing),
-                    isActive: $showSuccess
-                ) { EmptyView() }
+        NavigationLink(
+            destination: PaymentSuccessView(doctor: vm.doctor, billing: vm.billing),
+            isActive: $showSuccess
+        ) { EmptyView() }
             }
             .padding(.vertical)
         }
-        .background(Color(.systemGray6))
+        .background(Color.cfBg)
         .navigationTitle("Payment")
         .navigationBarTitleDisplayMode(.inline)
     }

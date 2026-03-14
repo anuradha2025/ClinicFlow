@@ -52,21 +52,23 @@ struct BookAppointmentView: View {
                     .padding(.horizontal)
 
                 // Book Button
-                NavigationLink(destination: PaymentView(billing: vm.billing, doctor: vm.doctor)) {
+                NavigationLink(destination: AppointmentPaymentView(billing: vm.billing, doctor: vm.doctor)) {
                     Text("Book Appointment")
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(vm.selectedTimeSlot == nil ? Color.gray : Color.cfPrimary)
-                        .cornerRadius(12)
+                        .padding(.vertical, 15)
+                        .background(vm.selectedTimeSlot == nil ? Color.cfTextTertiary : Color.cfBlue)
+                        .cornerRadius(16)
+                        .shadow(color: vm.selectedTimeSlot == nil ? .clear : Color.cfBlue.opacity(0.30), radius: 8, x: 0, y: 4)
+                        .contentShape(Rectangle())
                 }
                 .disabled(vm.selectedTimeSlot == nil)
                 .padding(.horizontal)
             }
             .padding(.vertical)
         }
-        .background(Color(.systemGray6))
+        .background(Color.cfBg)
         .navigationTitle("Book Appointment")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { vm.loadSlots(for: Date()) }

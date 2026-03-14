@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PreviousAppointmentDetailView: View {
     let appointment: Appointment
+    @EnvironmentObject var nav: AppNavigation
 
     var isCancelled: Bool {
         appointment.status == .cancelled
@@ -68,7 +69,7 @@ struct PreviousAppointmentDetailView: View {
                                 }
                             }
 
-                            Button {} label: {
+                            NavigationLink(destination: ProceedPharmacyView(pharmVM: PharmacyViewModel(), appointment: appointment)) {
                                 HStack {
                                     Text("Proceed to Pharmacy")
                                         .font(.subheadline.bold())
@@ -80,6 +81,7 @@ struct PreviousAppointmentDetailView: View {
                                 .background(Color.cfPrimary)
                                 .cornerRadius(10)
                             }
+                            .buttonStyle(PlainButtonStyle())
                         }
                         .padding()
                         .background(Color.white)
@@ -108,7 +110,9 @@ struct PreviousAppointmentDetailView: View {
                                 }
                             }
 
-                            Button {} label: {
+                            Button {
+                                nav.referralAppointment = appointment
+                            } label: {
                                 HStack {
                                     Text("Proceed to Laboratory")
                                         .font(.subheadline.bold())
@@ -120,6 +124,7 @@ struct PreviousAppointmentDetailView: View {
                                 .background(Color.cfSuccess)
                                 .cornerRadius(10)
                             }
+                            .buttonStyle(PlainButtonStyle())
                         }
                         .padding()
                         .background(Color.white)
@@ -176,7 +181,7 @@ struct PreviousAppointmentDetailView: View {
             }
             .padding(.vertical)
         }
-        .background(Color(.systemGray6))
+        .background(Color.cfBg)
         .navigationTitle("Appointment Details")
         .navigationBarTitleDisplayMode(.inline)
     }

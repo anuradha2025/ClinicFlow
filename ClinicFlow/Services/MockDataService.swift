@@ -107,7 +107,7 @@ class MockDataService {
             QueueEntry(id: 2, time: "09:15 AM", status: .checkedIn),
             QueueEntry(id: 3, time: "10:00 AM", status: .ongoing),
             QueueEntry(id: 4, time: "10:45 AM", status: .cancelled),
-            QueueEntry(id: 5, time: "11:30 AM", status: .cancelled),
+            QueueEntry(id: 5, time: "11:30 AM", status: .notAvailable),
             QueueEntry(id: 6, time: "12:00 PM", status: .you),
         ]
     }
@@ -191,8 +191,8 @@ class MockDataService {
                     PrescriptionItem(id: UUID(), name: "Salts", dosage: "550mg")
                 ],
                 labTests: [
-                    LabTest(id: UUID(), name: "Complete Blood Count (CBC)"),
-                    LabTest(id: UUID(), name: "Dengue NS1 Antigen Test")
+                    AppointmentLabTest(id: UUID(), name: "Complete Blood Count (CBC)"),
+                    AppointmentLabTest(id: UUID(), name: "Dengue NS1 Antigen Test")
                 ],
                 queueEntries: []
             ),
