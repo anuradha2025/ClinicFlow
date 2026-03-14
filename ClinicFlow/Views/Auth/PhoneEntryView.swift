@@ -12,7 +12,7 @@ struct PhoneEntryView: View {
     var body: some View {
         
         ZStack {
-            AppBackground()
+            AuthLightBackground()
 
             ScrollView(showsIndicators: false) {
                 
@@ -21,19 +21,19 @@ struct PhoneEntryView: View {
                     Spacer().frame(height: 60)
 
                     // ICON
-                    IconCircle(systemName: "phone.fill")
+                    AuthLightIconCircle(systemName: "phone.fill")
 
                     Spacer().frame(height: 32)
 
                     Text("Enter Your Number")
                         .font(.system(size: 30, weight: .bold, design: .rounded))
-                        .foregroundColor(.white)
+                        .foregroundColor(.cfTextPrimary)
 
                     Spacer().frame(height: 10)
 
                     Text("We'll send a verification code\nto confirm your identity")
                         .font(.system(size: 15, design: .rounded))
-                        .foregroundColor(.white.opacity(0.6))
+                        .foregroundColor(.cfTextSecondary)
                         .multilineTextAlignment(.center)
                         .lineSpacing(4)
 
@@ -44,7 +44,7 @@ struct PhoneEntryView: View {
 
                         Text("Phone Number")
                             .font(.system(size: 13, weight: .semibold, design: .rounded))
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundColor(.cfTextSecondary)
                             .padding(.horizontal, 4)
 
                         HStack(spacing: 12) {
@@ -53,16 +53,16 @@ struct PhoneEntryView: View {
                                 Text("🇱🇰")
                                 Text("+94")
                                     .font(.system(size: 15, weight: .semibold, design: .rounded))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.cfTextPrimary)
                             }
                             .padding(.horizontal, 14)
                             .padding(.vertical, 14)
                             .background(
                                 RoundedRectangle(cornerRadius: 14)
-                                    .fill(Color.white.opacity(0.12))
+                                    .fill(Color.white)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 14)
-                                            .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                            .stroke(Color.cfDivider, lineWidth: 1)
                                     )
                             )
 
@@ -70,10 +70,10 @@ struct PhoneEntryView: View {
 
                                 TextField("", text: $phoneNumber,
                                           prompt: Text("7X XXX XXXX")
-                                            .foregroundColor(.white.opacity(0.3)))
+                                        .foregroundColor(.cfTextTertiary))
                                 
                                     .font(.system(size: 18, weight: .medium, design: .rounded))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.cfTextPrimary)
                                     .keyboardType(.phonePad)
                                     .focused($isPhoneFocused)
 
@@ -83,20 +83,20 @@ struct PhoneEntryView: View {
 
                                 Text("\(phoneNumber.count)/9")
                                     .font(.system(size: 11, design: .rounded))
-                                    .foregroundColor(phoneNumber.count == 9 ? .green : .white.opacity(0.3))
+                                    .foregroundColor(phoneNumber.count == 9 ? .cfSuccess : .cfTextTertiary)
                             }
                             .padding(.horizontal, 16)
                             .padding(.vertical, 16)
                             .background(
                                 RoundedRectangle(cornerRadius: 14)
-                                    .fill(Color.white.opacity(0.10))
+                                    .fill(Color.white)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 14)
                                             .stroke(
                                                 isPhoneFocused ?
-                                                Color.white.opacity(0.6)
+                                                Color.cfBlue
                                                 :
-                                                Color.white.opacity(0.2),
+                                                Color.cfDivider,
                                                 lineWidth: 1.5
                                             )
                                     )
@@ -111,21 +111,37 @@ struct PhoneEntryView: View {
                     if authVM.showError {
                         Text(authVM.errorMessage)
                             .font(.system(size: 13, design: .rounded))
-                            .foregroundColor(.red.opacity(0.9))
+                            .foregroundColor(.cfDanger)
                             .padding(.horizontal, 32)
                     }
 
                     Spacer().frame(height: 20)
 
                     // SEND CODE BUTTON
-                    AuthPrimaryButton(
-                        label: "Send Code",
-                        icon: "paperplane.fill",
-                        isEnabled: phoneNumber.count >= 9,
-                        isLoading: authVM.isLoading
-                    ) {
+                    Button {
                         authVM.sendOTP(phone: "+94\(phoneNumber)")
+                    } label: {
+                        HStack(spacing: 10) {
+                            if authVM.isLoading {
+                                ProgressView().tint(.white)
+                            } else {
+                                Text("Send Code")
+                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                    .foregroundColor(.white)
+                                Image(systemName: "paperplane.fill")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(.white)
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 58)
+                        .background(
+                            RoundedRectangle(cornerRadius: 18)
+                                .fill(phoneNumber.count >= 9 ? Color.cfBlue : Color.cfTextTertiary)
+                        )
+                        .padding(.horizontal, 32)
                     }
+                    .disabled(phoneNumber.count < 9 || authVM.isLoading)
 
                     Spacer().frame(height: 28)
 
@@ -133,16 +149,16 @@ struct PhoneEntryView: View {
                     HStack(spacing: 12) {
 
                         Rectangle()
-                            .fill(Color.white.opacity(0.2))
+                            .fill(Color.cfDivider)
                             .frame(height: 1)
 
                         Text("or continue with")
                             .font(.system(size: 12, design: .rounded))
-                            .foregroundColor(.white.opacity(0.4))
+                            .foregroundColor(.cfTextTertiary)
                             .fixedSize()
 
                         Rectangle()
-                            .fill(Color.white.opacity(0.2))
+                            .fill(Color.cfDivider)
                             .frame(height: 1)
                     }
                     .padding(.horizontal, 32)
@@ -165,16 +181,16 @@ struct PhoneEntryView: View {
 
                                 Text("Continue with Google")
                                     .font(.system(size: 15, weight: .semibold, design: .rounded))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.cfTextPrimary)
                             }
                             .frame(maxWidth: .infinity)
                             .frame(height: 54)
                             .background(
                                 RoundedRectangle(cornerRadius: 16)
-                                    .fill(Color.white.opacity(0.10))
+                                    .fill(Color.white)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 16)
-                                            .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                            .stroke(Color.cfDivider, lineWidth: 1)
                                     )
                             )
                         }
@@ -186,12 +202,12 @@ struct PhoneEntryView: View {
                         } onCompletion: { result in
                             authVM.handleAppleSignIn(result: result)
                         }
-                        .signInWithAppleButtonStyle(.white)
+                        .signInWithAppleButtonStyle(.black)
                         .frame(height: 54)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                         .overlay(
                             RoundedRectangle(cornerRadius: 16)
-                                .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                            .stroke(Color.cfDivider, lineWidth: 1)
                         )
                     }
                     .padding(.horizontal, 32)
@@ -201,7 +217,7 @@ struct PhoneEntryView: View {
                     // TERMS
                     Text("By continuing, you agree to our Terms of Service\nand Privacy Policy")
                         .font(.system(size: 12, design: .rounded))
-                        .foregroundColor(.white.opacity(0.4))
+                        .foregroundColor(.cfTextSecondary)
                         .multilineTextAlignment(.center)
                         .lineSpacing(4)
 

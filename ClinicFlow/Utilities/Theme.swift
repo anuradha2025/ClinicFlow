@@ -34,6 +34,24 @@ struct AppBackground: View {
     }
 }
 
+struct AuthLightBackground: View {
+    var body: some View {
+        ZStack {
+            Color.cfBg.ignoresSafeArea()
+
+            Circle()
+                .fill(Color.cfBlue.opacity(0.10))
+                .frame(width: 320, height: 320)
+                .offset(x: -140, y: -300)
+
+            Circle()
+                .fill(Color.cfBlueLight.opacity(0.9))
+                .frame(width: 260, height: 260)
+                .offset(x: 140, y: 340)
+        }
+    }
+}
+
 
 struct IconCircle: View {
     let systemName: String
@@ -51,6 +69,27 @@ struct IconCircle: View {
                 .scaledToFit()
                 .frame(width: iconSize, height: iconSize)
                 .foregroundColor(.white)
+        }
+    }
+}
+
+struct AuthLightIconCircle: View {
+    let systemName: String
+    var size: CGFloat = 90
+    var iconSize: CGFloat = 36
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(Color.cfBlue.opacity(0.12))
+                .frame(width: size, height: size)
+                .overlay(Circle().stroke(Color.cfBlue.opacity(0.22), lineWidth: 1))
+
+            Image(systemName: systemName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: iconSize, height: iconSize)
+                .foregroundColor(.cfBlue)
         }
     }
 }

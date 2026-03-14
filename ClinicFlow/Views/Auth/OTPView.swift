@@ -16,26 +16,26 @@ struct OTPView: View {
     
     var body: some View {
         ZStack {
-            AppBackground()
+            AuthLightBackground()
             
             VStack(spacing: 0) {
                 Spacer()
                 
-                IconCircle(systemName: "message.badge.filled.fill", iconSize: 34)
+                AuthLightIconCircle(systemName: "message.badge.filled.fill", iconSize: 34)
                 Spacer().frame(height: 32)
                 
                 Text("Verify Your Number")
                     .font(.system(size: 30, weight: .bold, design: .rounded))
-                    .foregroundColor(.white)
+                    .foregroundColor(.cfTextPrimary)
                 Spacer().frame(height: 10)
                 
                 VStack(spacing: 4) {
                     Text("We sent a 6-digit code to")
                         .font(.system(size: 15, design: .rounded))
-                        .foregroundColor(.white.opacity(0.6))
+                        .foregroundColor(.cfTextSecondary)
                     Text(phoneNumber)
                         .font(.system(size: 15, weight: .semibold, design: .rounded))
-                        .foregroundColor(Theme.accent)
+                        .foregroundColor(.cfBlue)
                 }
                 .multilineTextAlignment(.center)
                 
@@ -69,10 +69,10 @@ struct OTPView: View {
                     HStack(spacing: 6) {
                         Image(systemName: "clock")
                             .font(.system(size: 13))
-                            .foregroundColor(.white.opacity(0.5))
+                            .foregroundColor(.cfTextSecondary)
                         Text("Resend code in \(timeRemaining)s")
                             .font(.system(size: 14, design: .rounded))
-                            .foregroundColor(.white.opacity(0.5))
+                            .foregroundColor(.cfTextSecondary)
                     }
                 } else {
                     Button(action: resendCode) {
@@ -82,20 +82,36 @@ struct OTPView: View {
                             Text("Resend Code")
                                 .font(.system(size: 14, weight: .semibold, design: .rounded))
                         }
-                        .foregroundColor(Theme.accent)
+                        .foregroundColor(.cfBlue)
                     }
                 }
                 
                 Spacer().frame(height: 40)
                 
-                AuthPrimaryButton(
-                    label: authVM.otpVerified ? "Verified ✓" : "Verify Code",
-                    icon: authVM.otpVerified ? "checkmark.circle.fill" : "shield.checkered",
-                    isEnabled: isComplete,
-                    isLoading: authVM.isLoading
-                ) {
+                Button {
                     authVM.verifyOTP(phone: phoneNumber, code: otpCode)
+                } label: {
+                    HStack(spacing: 10) {
+                        if authVM.isLoading {
+                            ProgressView().tint(.white)
+                        } else {
+                            Text(authVM.otpVerified ? "Verified" : "Verify Code")
+                                .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                .foregroundColor(.white)
+                            Image(systemName: authVM.otpVerified ? "checkmark.circle.fill" : "shield.checkered")
+                                .font(.system(size: 16))
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 58)
+                    .background(
+                        RoundedRectangle(cornerRadius: 18)
+                            .fill(isComplete ? Color.cfBlue : Color.cfTextTertiary)
+                    )
+                    .padding(.horizontal, 32)
                 }
+                .disabled(!isComplete || authVM.isLoading)
                 
                 Spacer()
             }
@@ -173,32 +189,32 @@ struct OTPBox: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 14)
-                .fill(Color.white.opacity(digit.isEmpty ? 0.08 : 0.18))
+                .fill(Color.white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 14)
                         .stroke(
-                            isVerified ? Color.green.opacity(0.8) :
-                            isFocused  ? Color.white.opacity(0.8) :
-                            digit.isEmpty ? Color.white.opacity(0.15) : Color.white.opacity(0.4),
+                            isVerified ? Color.cfSuccess :
+                            isFocused  ? Color.cfBlue :
+                            digit.isEmpty ? Color.cfDivider : Color.cfBlue.opacity(0.4),
                             lineWidth: isFocused ? 2 : 1.5
                         )
                 )
                 .frame(width: 48, height: 58)
-                .shadow(color: isFocused ? Color.white.opacity(0.1) : .clear, radius: 8)
+                .shadow(color: isFocused ? Color.cfBlue.opacity(0.15) : .clear, radius: 8)
             
             if isVerified && !digit.isEmpty {
                 Image(systemName: "checkmark")
                     .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(.green)
+                    .foregroundColor(.cfSuccess)
             } else {
                 Text(digit)
                     .font(.system(size: 24, weight: .bold, design: .rounded))
-                    .foregroundColor(.white)
+                    .foregroundColor(.cfTextPrimary)
             }
             
             if isFocused && digit.isEmpty {
                 Rectangle()
-                    .fill(Color.white.opacity(0.8))
+                    .fill(Color.cfBlue)
                     .frame(width: 2, height: 24)
                     .cornerRadius(1)
             }

@@ -41,7 +41,7 @@ struct FindDoctorView: View {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(spacing: 0) {
                             // Search Bar
-                            CFSearchBar(text: $vm.searchText, placeholder: "Search doctors, specialties…")
+                            CFSearchBar(text: $vm.searchText, placeholder: "Search doctors…")
                                 .padding(.horizontal)
                                 .padding(.top, 16)
 
